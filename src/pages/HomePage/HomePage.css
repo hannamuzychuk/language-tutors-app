@@ -1,0 +1,127 @@
+.home {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 68px 64px 58px;
+  }
+  
+  .hero {
+    display: flex;
+    gap: 24px;
+    align-items: stretch;
+  }
+  
+  .hero-content {
+    width: 720px;
+    min-height: 530px;
+    padding: 98px 64px 64px;
+    background-color: #f8f8f8;
+    border-radius: 30px;
+  }
+  
+  .hero-content h1 {
+    max-width: 548px;
+    margin: 0 0 32px;
+    font-size: 48px;
+    line-height: 1.15;
+    font-weight: 700;
+    color: #121417;
+  }
+  
+  .hero-content p {
+    max-width: 471px;
+    margin: 0 0 64px;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #121417;
+  }
+  
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 267px;
+    height: 60px;
+    border-radius: 12px;
+    background-color: #8a8a89;
+    color: #121417;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .hero-image {
+    position: relative;
+    width: 568px;
+    min-height: 530px;
+    background-color: #8a8a89;
+    border-radius: 30px;
+    overflow: hidden;
+  }
+  
+  .hero-image-shape {
+    position: absolute;
+    background-color: #b0adad;
+  }
+  
+  .shape-1 {
+    width: 218px;
+    height: 218px;
+    top: 220px;
+    left: 109px;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+  
+  .shape-2 {
+    width: 284px;
+    height: 284px;
+    top: 186px;
+    left: 175px;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    background-color: #a8a6a6;
+  }
+  
+  .shape-3 {
+    width: 57px;
+    height: 58px;
+    top: 140px;
+    left: 234px;
+    border-radius: 50%;
+    background-color: #a8a6a6;
+  }
+  
+  .stats {
+    margin-top: 24px;
+    padding: 40px 123px;
+    border: 1.5px solid #8a8a89;
+    border-radius: 30px;
+  }
+  
+  .stats-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 100px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .stats-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .stats-value {
+    font-size: 32px;
+    line-height: 1;
+    font-weight: 700;
+    color: #121417;
+    white-space: nowrap;
+  }
+  
+  .stats-label {
+    max-width: 96px;
+    font-size: 14px;
+    line-height: 1.2;
+    color: rgba(18, 20, 23, 0.7);
+  }
