@@ -1,0 +1,41 @@
+.header {
+  padding: 20px 64px;
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1184px;
+  margin: 0 auto;
+}
+
+.headerLogo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #121417;
+}
+
+.headerLogo img {
+  display: block;
+  flex-shrink: 0;
+}
+
+.headerNav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.headerNav a {
+  font-size: 16px;
+  font-weight: 500;
+  color: #121417;
+}
+
+.headerNav a:hover {
+  opacity: 0.8;
+}
