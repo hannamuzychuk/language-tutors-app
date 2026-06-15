@@ -39,3 +39,31 @@
 .headerNav a:hover {
   opacity: 0.8;
 }
+
+.headerAuth {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.loginBtn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #8a8a89;
+}
+
+.registerBtn {
+  padding: 14px 40px;
+  border: none;
+  border-radius: 12px;
+  background-color: #8a8a89;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.userEmail {
+  font-size: 14px;
+  color: #121417;
+}

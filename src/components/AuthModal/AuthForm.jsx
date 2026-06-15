@@ -1,29 +1,60 @@
-function AuthForm({ register, isRegister, onSubmit, handleSubmit, errors }) {
+function AuthForm({ 
+    register,
+    isRegister,
+    onSubmit,
+    handleSubmit,
+    errors,
+    styles
+}) {
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <label>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+            <div className={styles.field}>
+            <label className={styles.label} htmlFor="email">
                 Email
-                <input type="email" {...register('email')} placeholder="Enter your email" />
             </label>
-            {errors.email && <p className="error">{errors.email.message}</p>}
+            <input 
+                className={styles.input}
+                type="email" 
+                id="email"
+                {...register('email')} 
+                placeholder="Enter your email" />
 
-            <label>
+            {errors.email && <p className={styles.error}>{errors.email.message}</p>}
+            </div>
+
+            <div className={styles.field}>
+            <label className={styles.label} htmlFor="password">
                 Password 
-                <input type="password" {...register('password')} placeholder="Enter your password" />
             </label>
-            {errors.password && <p className="error">{errors.password.message}</p>}
+            <input
+             type="password"
+             id="password"
+             className={styles.input}
+             {...register('password')}
+              placeholder="Enter your password" />
+
+            {errors.password && <p className={styles.error}>{errors.password.message}</p>}
+            </div>
 
             {isRegister && (
-                <>
-                <label>
-                    Confirm Password 
-                    <input type="password" {...register('confirmPassword')} placeholder="Confirm your password" />
+                <div className={styles.field}>
+                <label className={styles.label} htmlFor="confirmPassword">
+                    Confirm Password
                 </label>
-                {errors.confirmPassword && <p className="error">{errors.confirmPassword.message}</p>}
-                </>
+                <input
+                 type="password"
+                 id="confirmPassword"
+                 className={styles.input}
+                 {...register('confirmPassword')}
+                 placeholder="Confirm your password" />
+
+                {errors.confirmPassword && <p className={styles.error}>{errors.confirmPassword.message}</p>}
+                </div>
             )}
 
-            <button type="submit">{isRegister ? 'Register' : 'Login'}</button>
+            <button type="submit" className={styles.submitBtn}>
+                {isRegister ? 'Register' : 'Login'}
+            </button>
         </form>
     );
 }

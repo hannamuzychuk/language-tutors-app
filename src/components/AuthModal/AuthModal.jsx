@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema, loginSchema } from '../../validation/authSchema';
 import { registerUser, loginUser } from '../../firebase/authService';
 import AuthForm from './AuthForm';
+import styles from './AuthModal.module.css'; 
 
 function AuthModalForm({ isRegister, onClose, onToggleModal }) {
   const [authError, setAuthError] = useState('');
@@ -40,11 +41,12 @@ function AuthModalForm({ isRegister, onClose, onToggleModal }) {
         isRegister={isRegister}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
+        styles={styles}
       />
 
-      {authError && <p className="error">{authError}</p>}
+      {authError && <p className={styles.error}>{authError}</p>}
 
-      <button type="button" onClick={onToggleModal}>
+      <button type="button" className={styles.toggleBtn} onClick={onToggleModal}>
         {isRegister
           ? 'Already have an account? Login'
           : "Don't have an account? Register"}
@@ -53,14 +55,18 @@ function AuthModalForm({ isRegister, onClose, onToggleModal }) {
   );
 }
 
-function AuthModal({ onClose }) {
-  const [isRegister, setIsRegister] = useState(false);
+function AuthModal({ onClose, initialMode = 'login' }) {
+  const [isRegister, setIsRegister] = useState(initialMode === 'register');
 
   const toggleMode = () => setIsRegister((prev) => !prev);
 
   return (
-    <div className="auth-modal">
-      <h2>{isRegister ? 'Register' : 'Login'}</h2>
+    <div className={styles.authModal}>
+      <h2 className={styles.title}>{isRegister ? 'Register' : 'Login'}</h2>
+
+      <p className={styles.subtitle}>{isRegister
+      ? 'Create an account to get started' : 'Log in to your account'}
+      </p>
 
       <AuthModalForm
         key={isRegister ? 'register' : 'login'}
