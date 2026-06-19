@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import homeGuest from '../../assets/images/home_guest.png';
+import HeroThemeBlock from '../../components/HeroThemeBlock/HeroThemeBlock';
+import { THEME_COLORS } from '../../config/themeColors';
+import { useTheme } from '../../context/ThemeContext';
 import styles from './HomePage.module.css';
 
 const stats = [
@@ -10,33 +12,84 @@ const stats = [
 ];
 
 function HomePage() {
+  const { theme } = useTheme();
+  const colors = THEME_COLORS[theme];
+
   return (
     <main className={styles.home}>
       <section className={styles.hero}>
-        <div className={styles.heroContent}>
-          <h1>Unlock your potential with the best language tutors</h1>
+        <div
+          className={styles.heroContent}
+          style={{ backgroundColor: colors.heroBg }}
+        >
+          <h1 style={{ color: colors.text }}>
+            Unlock your potential with the best{' '}
+            <span
+              className={styles.highlight}
+              style={{
+                backgroundColor: colors.highlightBg,
+                color: colors.highlightText,
+              }}
+            >
+              language
+            </span>{' '}
+            tutors
+          </h1>
 
-          <p>
+          <p style={{ color: colors.text }}>
             Embark on an Exciting Language Journey with Expert Language Tutors:
             Elevate your language proficiency to new heights by connecting with
             highly qualified and experienced tutors.
           </p>
 
-          <Link to="/teachers" className={styles.heroBtn}>
+          <Link
+            to="/teachers"
+            className={styles.heroBtn}
+            style={{
+              backgroundColor: colors.btnPrimary,
+              color: colors.btnText,
+            }}
+          >
             Get started
           </Link>
         </div>
 
-        <div className={styles.heroImage}>
-          <img src={homeGuest} alt="Language tutors" />
+        <div
+          className={styles.heroImage}
+          style={{ backgroundColor: colors.heroImageBg }}
+          aria-hidden="true"
+        >
+          {theme === 'gray' ? (
+            <>
+              <div
+                className={`${styles.heroImageShape} ${styles.shape1}`}
+                style={{ backgroundColor: colors.shape1 }}
+              />
+              <div
+                className={`${styles.heroImageShape} ${styles.shape2}`}
+                style={{ backgroundColor: colors.shape2 }}
+              />
+              <div
+                className={`${styles.heroImageShape} ${styles.shape3}`}
+                style={{ backgroundColor: colors.shape2 }}
+              />
+            </>
+          ) : (
+            <HeroThemeBlock theme={theme} />
+          )}
         </div>
       </section>
 
-      <section className={styles.stats}>
+      <section
+        className={styles.stats}
+        style={{ borderColor: colors.statsBorder }}
+      >
         <ul className={styles.statsList}>
           {stats.map((item) => (
             <li key={item.label} className={styles.statsItem}>
-              <span className={styles.statsValue}>{item.value}</span>
+              <span className={styles.statsValue} style={{ color: colors.text }}>
+                {item.value}
+              </span>
               <span className={styles.statsLabel}>{item.label}</span>
             </li>
           ))}

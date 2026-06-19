@@ -1,0 +1,24 @@
+.scene {
+  position: absolute;
+  left: 88px;
+  bottom: 0;
+  width: 391px;
+}
+
+.sticker {
+  display: block;
+  width: 339px;
+  margin-left: 26px;
+  margin-bottom: -72px;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+}
+
+.mac {
+  display: block;
+  width: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+}

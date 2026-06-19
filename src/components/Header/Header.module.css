@@ -6,7 +6,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1184px;
+  gap: 24px;
+  max-width: 1312px;
   margin: 0 auto;
 }
 
@@ -17,6 +18,7 @@
   font-size: 18px;
   font-weight: 600;
   color: #121417;
+  text-decoration: none;
 }
 
 .headerLogo img {
@@ -28,6 +30,7 @@
   display: flex;
   align-items: center;
   gap: 28px;
+  margin-left: auto;
 }
 
 .headerNav a {
@@ -40,6 +43,12 @@
   opacity: 0.8;
 }
 
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .headerAuth {
   display: flex;
   align-items: center;
@@ -47,20 +56,24 @@
 }
 
 .loginBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   background: none;
   border: none;
   font-size: 16px;
-  color: #8a8a89;
+  font-weight: 500;
+  color: #121417;
+  cursor: pointer;
 }
 
 .registerBtn {
   padding: 14px 40px;
   border: none;
   border-radius: 12px;
-  background-color: #8a8a89;
-  color: #fff;
   font-size: 16px;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .userEmail {

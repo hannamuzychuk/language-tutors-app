@@ -1,13 +1,20 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { THEME_COLORS } from '../../config/themeColors';
+import { useTheme } from '../../context/ThemeContext';
 import { logoutUser } from '../../firebase/authService';
 import AuthModal from '../AuthModal/AuthModal';
 import Modal from '../Modal/Modal';
+import LoginIcon from '../icons/LoginIcon';
+import Logo from '../Logo/Logo';
+import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 import styles from './Header.module.css';
 
 function Header() {
   const { user } = useAuth();
+  const { theme } = useTheme();
+  const colors = THEME_COLORS[theme];
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState('login');
 
@@ -31,7 +38,7 @@ function Header() {
     <header className={styles.header}>
       <div className={styles.headerInner}>
         <Link to="/" className={styles.headerLogo}>
-          <img src="/logo/logo_quest.png" alt="" width={28} height={28} />
+          <Logo theme={theme} />
           <span>LearnLingo</span>
         </Link>
 
@@ -41,7 +48,10 @@ function Header() {
           {user && <Link to="/favorites">Favorites</Link>}
         </nav>
 
-        <div className={styles.headerAuth}>
+        <div className={styles.headerRight}>
+          <ThemeSwitcher />
+
+          <div className={styles.headerAuth}>
           {user ? (
             <>
               <span className={styles.userEmail}>{user.email}</span>
@@ -56,17 +66,23 @@ function Header() {
                 className={styles.loginBtn}
                 onClick={openLoginModal}
               >
+                <LoginIcon color={colors.accent} />
                 Log in
               </button>
               <button
                 type="button"
                 className={styles.registerBtn}
+                style={{
+                  backgroundColor: colors.registerBg,
+                  color: colors.registerText,
+                }}
                 onClick={openRegisterModal}
               >
                 Registration
               </button>
             </>
           )}
+          </div>
         </div>
       </div>
 
