@@ -76,6 +76,20 @@
   cursor: pointer;
 }
 
+.logoutBtn {
+  padding: 14px 40px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.logoutBtn:hover {
+  opacity: 0.88;
+}
+
 .userEmail {
   font-size: 14px;
   color: #121417;

@@ -10,8 +10,8 @@ function HeroThemeBlock({ theme }) {
 
   return (
     <div className={styles.scene}>
-      <img src={HERO_STICKER} alt="" className={styles.sticker} />
-      <img src={macSrc} alt="" className={styles.mac} />
+      <img src={HERO_STICKER} alt="Smiling face" className={styles.sticker} />
+      <img src={macSrc} alt="Macbook" className={styles.mac} />
     </div>
   );
 }

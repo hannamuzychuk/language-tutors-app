@@ -55,7 +55,15 @@ function Header() {
           {user ? (
             <>
               <span className={styles.userEmail}>{user.email}</span>
-              <button type="button" onClick={handleLogout}>
+              <button
+                type="button"
+                className={styles.logoutBtn}
+                style={{
+                  backgroundColor: colors.registerBg,
+                  color: colors.registerText,
+                }}
+                onClick={handleLogout}
+              >
                 Logout
               </button>
             </>

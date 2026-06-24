@@ -1,0 +1,10 @@
+.page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 96px 64px 80px;
+    background-color: #f8f8f8;
+  }
+  
+  .filters { display: flex; gap: 20px; }
+  
+  .cards { display: flex; flex-direction: column; gap: 32px; margin-top: 32px; }
