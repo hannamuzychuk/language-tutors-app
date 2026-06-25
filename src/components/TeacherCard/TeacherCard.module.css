@@ -1,0 +1,71 @@
+.card {
+    display: flex;
+    gap: 48px;
+    padding: 24px;
+    border-radius: 24px;
+    background-color: #ffffff;
+  }
+  
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid;
+    flex-shrink: 0;
+  }
+  
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .language {
+    margin: 0;
+    color: #8a8a89;
+  }
+  
+  .name {
+    margin: 8px 0 0;
+    color: #121417;
+  }
+
+  .details p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 24px;
+    color: #121417;
+  }
+
+  .readMoreBtn {
+    align-self: flex-start;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    line-height: 24px;
+    color: #121417;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .readMoreBtn:hover {
+    opacity: 0.8;
+  }
+  
+  .levels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .levelTag {
+    padding: 8px 12px;
+    border-radius: 35px;
+    font-size: 14px;
+    color: #121417;
+    border: 1px solid rgba(18, 20, 23, 0.2);
+    background-color: transparent;
+  }
