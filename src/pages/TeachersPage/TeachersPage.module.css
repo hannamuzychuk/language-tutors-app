@@ -8,3 +8,18 @@
   .filters { display: flex; gap: 20px; }
   
   .cards { display: flex; flex-direction: column; gap: 32px; margin-top: 32px; }
+
+  .loadMoreBtn {
+    display: block;
+    margin: 32px auto 0;
+    padding: 16px 48px;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .loadMoreBtn:hover {
+    opacity: 0.9;
+  }
