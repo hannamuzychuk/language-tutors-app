@@ -5,6 +5,8 @@ import styles from './TeachersPage.module.css';
 import TeachersFilters from '../../components/TeachersFilter/TeachersFilters';
 import TeacherCard from '../../components/TeacherCard/TeacherCard';
 import { getTeachers } from '../../firebase/teachersService';
+import Modal from '../../components/Modal/Modal';
+import BookingModal from '../../components/BookingModal/BookingModal';
 
 function TeachersPage() {
     const {theme} = useTheme();
@@ -12,6 +14,9 @@ function TeachersPage() {
     const [filters, setFilters] = useState({language: '', level: '', price: ''});
     const [teachers, setTeachers] = useState([]);
     const [visibleCount, setVisibleCount] = useState(3);
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+    const [selectedTeacher, setSelectedTeacher] = useState(null);
+
 
     useEffect(() => {
         const unsubscribe = getTeachers((data) => {
@@ -33,12 +38,22 @@ function TeachersPage() {
 
       const visibleTeachers = filteredTeachers.slice(0, visibleCount);
 
+      const openBookingModal = (teacher) => {
+        setSelectedTeacher(teacher);
+        setIsBookingModalOpen(true);
+      };
+
+      const closeBookingModal = () => {
+        setIsBookingModalOpen(false);
+        setSelectedTeacher(null);
+      };
+
     return (
         <main className={styles.page}>
          <TeachersFilters onChange={setFilters} />
          <section className={styles.cards}>
             {visibleTeachers.map((teacher, index) => (
-                <TeacherCard key={teacher.id ?? index} teacher={teacher} colors={colors} />
+                <TeacherCard key={teacher.id ?? index} teacher={teacher} colors={colors} onBookLesson={openBookingModal} />
             ))}
 
             {filteredTeachers.length === 0 && (
@@ -59,6 +74,11 @@ function TeachersPage() {
             </button>
          )}
 
+         <Modal isOpen={isBookingModalOpen} onClose={closeBookingModal}>
+          {selectedTeacher && (
+          <BookingModal teacher={selectedTeacher} colors={colors} onClose={closeBookingModal} />
+          )}
+         </Modal>
         </main>
     )
 }

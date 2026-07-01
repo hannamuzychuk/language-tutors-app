@@ -13,7 +13,7 @@ function getReviewAvatarUrl(review) {
     return null;
 }
 
-function TeacherCard({teacher, colors}) {
+function TeacherCard({teacher, colors, onBookLesson}) {
 
     const fullName = `${teacher.name} ${teacher.surname}`;
     const [isExpanded, setIsExpanded] = useState(false);
@@ -114,15 +114,15 @@ function TeacherCard({teacher, colors}) {
                     </div>
                 )}
 
-                {!isExpanded && (
-                    <button
-                        type="button"
-                        className={styles.readMoreBtn}
-                        onClick={() => setIsExpanded(true)}
-                    >
-                        Read more
-                    </button>
-                )}
+                <button
+                    type="button"
+                    className={styles.readMoreBtn}
+                    onClick={() => setIsExpanded(!isExpanded)}
+                >
+                    {isExpanded ? 'Read less' : 'Read more'}
+                </button>
+
+                
 
                 <div className={styles.levels}>
                     {teacher.levels.map((level, index) => (
@@ -139,6 +139,20 @@ function TeacherCard({teacher, colors}) {
                         </span>
                     ))}
                 </div>
+
+                {isExpanded && (
+                    <button
+                        type="button"
+                        className={styles.bookBtn}
+                        style={{
+                            backgroundColor: colors.btnPrimary,
+                            color: colors.btnText,
+                        }}
+                        onClick={() => onBookLesson(teacher)}
+                    >
+                        Book trial lesson
+                    </button>
+                )}
 
             </div>
 
