@@ -226,3 +226,7 @@
   .bookBtn:hover {
     opacity: 0.9;
   }
+
+  .heartActive {
+    transform: scale(1.1);
+  }

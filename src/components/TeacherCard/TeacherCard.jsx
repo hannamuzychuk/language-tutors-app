@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import bookIcon from '../icons/book-open-01.svg';
-import heartIcon from '../icons/Heart.svg';
 import starIcon from '../icons/Star.svg';
 import styles from './TeacherCard.module.css';
 
@@ -13,7 +13,7 @@ function getReviewAvatarUrl(review) {
     return null;
 }
 
-function TeacherCard({teacher, colors, onBookLesson}) {
+function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorite}) {
 
     const fullName = `${teacher.name} ${teacher.surname}`;
     const [isExpanded, setIsExpanded] = useState(false);
@@ -63,8 +63,17 @@ function TeacherCard({teacher, colors, onBookLesson}) {
                             </span>
                         </div>
 
-                        <button type="button" className={styles.heartBtn} aria-label="Add to favorites">
-                            <img src={heartIcon} alt="" aria-hidden="true" className={styles.icon} width={26} height={22} />
+                        <button
+                            type="button"
+                            className={`${styles.heartBtn} ${isFavorite ? styles.heartActive : ''}`}
+                            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                            onClick={() => onToggleFavorite(teacher)}
+                        >
+                            {isFavorite ? (
+                                <FaHeart size={24} color={colors.accent} />
+                            ) : (
+                                <FaRegHeart size={24} color="#121417" />
+                            )}
                         </button>
                     </div>
                 </div>

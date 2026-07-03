@@ -2,7 +2,7 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage/HomePage'
 import TeachersPage from './pages/TeachersPage/TeachersPage'
-import FavoritesPage from './pages/FavoritesPage' 
+import FavoritesPage from './pages/FavoritePage/FavoritesPage'
 import Header from './components/Header/Header'
 
 function App() {

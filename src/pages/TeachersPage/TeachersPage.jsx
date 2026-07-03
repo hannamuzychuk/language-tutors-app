@@ -7,10 +7,15 @@ import TeacherCard from '../../components/TeacherCard/TeacherCard';
 import { getTeachers } from '../../firebase/teachersService';
 import Modal from '../../components/Modal/Modal';
 import BookingModal from '../../components/BookingModal/BookingModal';
+import { useAuth } from '../../context/AuthContext';
+import { useFavorites } from '../../context/FavoritesContext';
+
 
 function TeachersPage() {
     const {theme} = useTheme();
     const colors = THEME_COLORS[theme];
+    const { user } = useAuth();
+    const { isFavorite, toggleFavorites } = useFavorites();
     const [filters, setFilters] = useState({language: '', level: '', price: ''});
     const [teachers, setTeachers] = useState([]);
     const [visibleCount, setVisibleCount] = useState(3);
@@ -48,12 +53,20 @@ function TeachersPage() {
         setSelectedTeacher(null);
       };
 
+      const handleToggleFavorite = (teacher) => {
+        if (!user) {
+          alert('Please log in to add favorites');
+          return;
+        }
+        toggleFavorites(teacher);
+      };
+
     return (
         <main className={styles.page}>
          <TeachersFilters onChange={setFilters} />
          <section className={styles.cards}>
             {visibleTeachers.map((teacher, index) => (
-                <TeacherCard key={teacher.id ?? index} teacher={teacher} colors={colors} onBookLesson={openBookingModal} />
+                <TeacherCard key={teacher.id ?? index} teacher={teacher} colors={colors} onBookLesson={openBookingModal} isFavorite={isFavorite(teacher)} onToggleFavorite={handleToggleFavorite} />
             ))}
 
             {filteredTeachers.length === 0 && (
