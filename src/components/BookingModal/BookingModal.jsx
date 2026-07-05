@@ -4,6 +4,7 @@ import { bookingSchema } from '../../validation/bookingSchema';
 import styles from './BookingModal.module.css';
 import { createBooking } from '../../firebase/bookingService';
 import { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 
 
 const REASONS = [
@@ -14,8 +15,9 @@ const REASONS = [
     'Culture, travel or hobby',
   ];
 
-function BookingModal({teacher, colors, onClose}) {
-    const {register, handleSubmit, formState: {errors}} = useForm({
+function BookingModal({ teacher, colors, onClose, onRequireAuth }) {
+    const { user } = useAuth();
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(bookingSchema),
     });
 
@@ -24,7 +26,12 @@ function BookingModal({teacher, colors, onClose}) {
     const language = teacher.languages[0];
 
     const onSubmit = async (data) => {
-        try { 
+        if (!user) {
+            onRequireAuth?.();
+            return;
+        }
+
+        try {
         setSubmitError('');
 
         const bookingToSave = {

@@ -55,7 +55,7 @@ function AuthModalForm({ isRegister, onClose, onToggleModal }) {
   );
 }
 
-function AuthModal({ onClose, initialMode = 'login' }) {
+function AuthModal({ onClose, initialMode = 'login', message }) {
   const [isRegister, setIsRegister] = useState(initialMode === 'register');
 
   const toggleMode = () => setIsRegister((prev) => !prev);
@@ -63,6 +63,8 @@ function AuthModal({ onClose, initialMode = 'login' }) {
   return (
     <div className={styles.authModal}>
       <h2 className={styles.title}>{isRegister ? 'Register' : 'Login'}</h2>
+
+      {message && <p className={styles.notice}>{message}</p>}
 
       <p className={styles.subtitle}>{isRegister
       ? 'Create an account to get started' : 'Log in to your account'}

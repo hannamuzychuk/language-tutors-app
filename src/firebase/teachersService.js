@@ -1,17 +1,28 @@
-import { ref, onValue } from 'firebase/database';
+import { ref, query, get, orderByKey, startAfter, limitToFirst } from 'firebase/database';
 import { db } from './config';
 
-export function getTeachers(callback) {
+const TEACHERS_PER_PAGE = 4;
+
+export async function getTeachersBatch(lastKey = null) {
     const teachersRef = ref(db, 'teachers');
 
-    return onValue(teachersRef, (snapshot) => {
-        const data = snapshot.val();
+    const teachersQuery = lastKey
+        ? query(teachersRef, orderByKey(), startAfter(lastKey), limitToFirst(TEACHERS_PER_PAGE))
+        : query(teachersRef, orderByKey(), limitToFirst(TEACHERS_PER_PAGE));
 
-        if (!data) {
-            return callback([]);
-        }
+    const snapshot = await get(teachersQuery);
 
-        const teachers = Object.values(data);
-        callback(teachers);
+    const teachers = [];
+    let newLastKey = null;
+
+    snapshot.forEach((child) => {
+        teachers.push({ id: child.key, ...child.val() });
+        newLastKey = child.key;
     });
+
+    return {
+        teachers,
+        lastKey: newLastKey,
+        hasMore: teachers.length === TEACHERS_PER_PAGE,
+    };
 }

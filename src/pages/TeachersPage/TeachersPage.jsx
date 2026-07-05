@@ -4,96 +4,153 @@ import { THEME_COLORS } from '../../config/themeColors';
 import styles from './TeachersPage.module.css';
 import TeachersFilters from '../../components/TeachersFilter/TeachersFilters';
 import TeacherCard from '../../components/TeacherCard/TeacherCard';
-import { getTeachers } from '../../firebase/teachersService';
+import { getTeachersBatch } from '../../firebase/teachersService';
 import Modal from '../../components/Modal/Modal';
 import BookingModal from '../../components/BookingModal/BookingModal';
+import AuthModal from '../../components/AuthModal/AuthModal';
 import { useAuth } from '../../context/AuthContext';
 import { useFavorites } from '../../context/FavoritesContext';
 
-
 function TeachersPage() {
-    const {theme} = useTheme();
+    const { theme } = useTheme();
     const colors = THEME_COLORS[theme];
     const { user } = useAuth();
     const { isFavorite, toggleFavorites } = useFavorites();
-    const [filters, setFilters] = useState({language: '', level: '', price: ''});
+    const [filters, setFilters] = useState({ language: '', level: '', price: '' });
     const [teachers, setTeachers] = useState([]);
-    const [visibleCount, setVisibleCount] = useState(3);
+    const [lastKey, setLastKey] = useState(null);
+    const [hasMore, setHasMore] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const [selectedTeacher, setSelectedTeacher] = useState(null);
-
-
-    useEffect(() => {
-        const unsubscribe = getTeachers((data) => {
-          setTeachers(data);
-        });
-        return () => unsubscribe();
-      }, []);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [authModalMessage, setAuthModalMessage] = useState('');
 
     useEffect(() => {
-      setVisibleCount(3);
-    }, [filters]);
+        const loadInitialTeachers = async () => {
+            setLoading(true);
+            const { teachers: batch, lastKey: key, hasMore: more } = await getTeachersBatch();
+            setTeachers(batch);
+            setLastKey(key);
+            setHasMore(more);
+            setLoading(false);
+        };
 
-      const filteredTeachers = teachers.filter((teacher) => {
+        loadInitialTeachers();
+    }, []);
+
+    const filteredTeachers = teachers.filter((teacher) => {
         if (filters.language && !teacher.languages.includes(filters.language)) return false;
         if (filters.level && !teacher.levels.includes(filters.level)) return false;
         if (filters.price && teacher.price_per_hour > parseInt(filters.price)) return false;
         return true;
-      });
+    });
 
-      const visibleTeachers = filteredTeachers.slice(0, visibleCount);
-
-      const openBookingModal = (teacher) => {
+    const openBookingModal = (teacher) => {
         setSelectedTeacher(teacher);
         setIsBookingModalOpen(true);
-      };
+    };
 
-      const closeBookingModal = () => {
+    const closeBookingModal = () => {
         setIsBookingModalOpen(false);
         setSelectedTeacher(null);
-      };
+    };
 
-      const handleToggleFavorite = (teacher) => {
+    const openAuthModal = (message = '') => {
+        setAuthModalMessage(message);
+        setIsAuthModalOpen(true);
+    };
+
+    const closeAuthModal = () => {
+        setIsAuthModalOpen(false);
+        setAuthModalMessage('');
+    };
+
+    useEffect(() => {
+        if (user && isAuthModalOpen) {
+            closeAuthModal();
+        }
+    }, [user, isAuthModalOpen]);
+
+    const handleToggleFavorite = (teacher) => {
         if (!user) {
-          alert('Please log in to add favorites');
-          return;
+            openAuthModal('Please log in or register to add and view your favorite teachers.');
+            return;
         }
         toggleFavorites(teacher);
-      };
+    };
+
+    const handleLoadMore = async () => {
+        if (!hasMore || loading) return;
+
+        setLoading(true);
+        const { teachers: batch, lastKey: key, hasMore: more } = await getTeachersBatch(lastKey);
+        setTeachers((prev) => [...prev, ...batch]);
+        setLastKey(key);
+        setHasMore(more);
+        setLoading(false);
+    };
+
+    const handleBookingRequireAuth = () => {
+        closeBookingModal();
+        openAuthModal('Please log in or register to book a trial lesson.');
+    };
 
     return (
         <main className={styles.page}>
-         <TeachersFilters onChange={setFilters} />
-         <section className={styles.cards}>
-            {visibleTeachers.map((teacher, index) => (
-                <TeacherCard key={teacher.id ?? index} teacher={teacher} colors={colors} onBookLesson={openBookingModal} isFavorite={isFavorite(teacher)} onToggleFavorite={handleToggleFavorite} />
-            ))}
+            <TeachersFilters onChange={setFilters} />
+            <section className={styles.cards}>
+                {filteredTeachers.map((teacher, index) => (
+                    <TeacherCard
+                        key={teacher.id ?? index}
+                        teacher={teacher}
+                        colors={colors}
+                        onBookLesson={openBookingModal}
+                        isFavorite={isFavorite(teacher)}
+                        onToggleFavorite={handleToggleFavorite}
+                    />
+                ))}
 
-            {filteredTeachers.length === 0 && (
-             <p className={styles.noTeachers} >No teachers found for selected filters.</p>
+                {!loading && filteredTeachers.length === 0 && (
+                    <p className={styles.noTeachers}>No teachers found for selected filters.</p>
+                )}
+            </section>
+
+            {hasMore && (
+                <button
+                    type="button"
+                    className={styles.loadMoreBtn}
+                    style={{
+                        backgroundColor: colors.btnPrimary,
+                        color: colors.btnText,
+                    }}
+                    onClick={handleLoadMore}
+                    disabled={loading}
+                >
+                    {loading ? 'Loading...' : 'Load more'}
+                </button>
             )}
-         </section>
-         {visibleCount < filteredTeachers.length && (
-            <button
-                type="button"
-                className={styles.loadMoreBtn}
-                style={{
-                    backgroundColor: colors.btnPrimary,
-                    color: colors.btnText,
-                }}
-                onClick={() => setVisibleCount((prev) => prev + 3)}
-            >
-                Load more
-            </button>
-         )}
 
-         <Modal isOpen={isBookingModalOpen} onClose={closeBookingModal}>
-          {selectedTeacher && (
-          <BookingModal teacher={selectedTeacher} colors={colors} onClose={closeBookingModal} />
-          )}
-         </Modal>
+            <Modal isOpen={isBookingModalOpen} onClose={closeBookingModal}>
+                {selectedTeacher && (
+                    <BookingModal
+                        teacher={selectedTeacher}
+                        colors={colors}
+                        onClose={closeBookingModal}
+                        onRequireAuth={handleBookingRequireAuth}
+                    />
+                )}
+            </Modal>
+
+            <Modal isOpen={isAuthModalOpen} onClose={closeAuthModal}>
+              <AuthModal
+                  onClose={closeAuthModal}
+                  initialMode="login"
+                  message={authModalMessage}
+              />
+            </Modal>
         </main>
-    )
+    );
 }
 
 export default TeachersPage;
