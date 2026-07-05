@@ -1,0 +1,47 @@
+.page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 96px 64px 80px;
+    background-color: #f8f8f8;
+}
+
+.title {
+    margin: 0;
+    font-size: 32px;
+    color: #121417;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 32px;
+}
+
+.empty {
+    font-size: 18px;
+    color: #8a8a89;
+}.page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 96px 64px 80px;
+    background-color: #f8f8f8;
+}
+
+.title {
+    margin: 0;
+    font-size: 32px;
+    color: #121417;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 32px;
+}
+
+.empty {
+    font-size: 18px;
+    color: #8a8a89;
+}

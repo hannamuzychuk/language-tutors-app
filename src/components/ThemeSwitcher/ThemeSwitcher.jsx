@@ -129,8 +129,7 @@ function ThemeSwitcher() {
           style={{ backgroundColor: THEME_COLORS[theme] }}
           aria-hidden="true"
         />
-        <span className={styles.label}>{THEME_LABELS[theme]}</span>
-        <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}>
+        <span className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
           ▾
         </span>
       </button>
