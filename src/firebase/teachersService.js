@@ -1,5 +1,6 @@
 import { ref, query, get, orderByKey, startAfter, limitToFirst } from 'firebase/database';
 import { db } from './config';
+import { parseTeachersFromSnapshot } from '../utils/teacherUtils';
 
 const TEACHERS_PER_PAGE = 4;
 
@@ -11,14 +12,8 @@ export async function getTeachersBatch(lastKey = null) {
         : query(teachersRef, orderByKey(), limitToFirst(TEACHERS_PER_PAGE));
 
     const snapshot = await get(teachersQuery);
-
-    const teachers = [];
-    let newLastKey = null;
-
-    snapshot.forEach((child) => {
-        teachers.push({ id: child.key, ...child.val() });
-        newLastKey = child.key;
-    });
+    const teachers = parseTeachersFromSnapshot(snapshot);
+    const newLastKey = teachers.length > 0 ? teachers[teachers.length - 1].id : null;
 
     return {
         teachers,

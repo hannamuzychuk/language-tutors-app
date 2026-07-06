@@ -1,17 +1,16 @@
 .scene {
   position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: min(100%, 320px);
-  transform: translateX(-50%);
+  inset: 0;
 }
 
 .sticker {
   display: block;
-  width: min(100%, 280px);
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: -48px;
+  position: absolute;
+  top: 15.1%;
+  left: 50%;
+  width: 59.7%;
+  height: auto;
+  transform: translateX(-50%);
   object-fit: contain;
   object-position: center bottom;
   pointer-events: none;
@@ -19,23 +18,29 @@
 
 .mac {
   display: block;
-  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 68.8%;
+  height: auto;
+  transform: translateX(-50%);
   object-fit: contain;
   object-position: center bottom;
   pointer-events: none;
 }
 
 @media (min-width: 1440px) {
-  .scene {
-    left: 88px;
-    width: 391px;
+  .sticker {
+    top: 80px;
+    left: 114px;
+    width: 339px;
     transform: none;
   }
 
-  .sticker {
-    width: 339px;
-    margin-left: 26px;
-    margin-right: 0;
-    margin-bottom: -72px;
+  .mac {
+    left: 88px;
+    bottom: 0;
+    width: 391px;
+    transform: none;
   }
 }

@@ -2,7 +2,7 @@
   max-width: 1440px;
   margin: 0 auto;
   padding: 32px 16px 48px;
-  background-color: #f8f8f8;
+  background-color: #f7f7f7;
 }
 
 .cards {
@@ -15,12 +15,14 @@
 .loadMoreBtn {
   display: block;
   width: 100%;
+  height: 56px;
   margin: 24px auto 0;
-  padding: 14px 32px;
+  padding: 0 32px;
   border: none;
   border-radius: 12px;
   font-size: 18px;
   font-weight: 500;
+  line-height: 28px;
   cursor: pointer;
   transition: opacity 0.2s ease, transform 0.15s ease;
 }
@@ -46,17 +48,19 @@
 
 @media (min-width: 1440px) {
   .page {
-    padding: 96px 64px 80px;
+    padding: 96px 128px 80px;
   }
 
   .cards {
     gap: 32px;
     margin-top: 32px;
+    max-width: 1184px;
   }
 
   .loadMoreBtn {
-    width: auto;
-    margin-top: 32px;
-    padding: 16px 48px;
+    width: 183px;
+    height: 60px;
+    margin-top: 64px;
+    padding: 0;
   }
 }

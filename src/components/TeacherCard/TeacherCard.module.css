@@ -53,38 +53,75 @@
   
   .language {
     margin: 0;
+    font-size: 16px;
+    line-height: 24px;
     color: #8a8a89;
   }
-  
+
   .name {
     margin: 8px 0 0;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
     color: #121417;
   }
 
   .header {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'name heart'
+      'meta meta';
     gap: 16px;
+    align-items: start;
   }
 
   .nameBlock {
+    grid-area: name;
     flex-shrink: 0;
+    min-width: 0;
+  }
+
+  .heartBtn {
+    grid-area: heart;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    justify-self: end;
+    touch-action: manipulation;
+    transition: opacity 0.2s ease, transform 0.15s ease;
   }
 
   .metaRow {
+    grid-area: meta;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    min-height: 24px;
   }
 
   .metaItems {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    flex: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
     gap: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .metaItems::-webkit-scrollbar {
+    display: none;
   }
 
   .metaItem {
@@ -95,6 +132,11 @@
     line-height: 24px;
     color: #121417;
     white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .priceValue {
+    font-weight: 500;
   }
 
   .icon {
@@ -107,15 +149,7 @@
     height: 16px;
     background-color: rgba(18, 20, 23, 0.2);
     flex-shrink: 0;
-  }
-
-  .heartBtn {
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: opacity 0.2s ease, transform 0.15s ease;
+    align-self: center;
   }
 
   .heartBtn:hover {
@@ -124,6 +158,12 @@
 
   .heartBtn:active {
     transform: scale(0.95);
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .details p {
@@ -139,7 +179,6 @@
 
   .speaksValue {
     font-weight: 500;
-    text-decoration: underline;
   }
 
   .experience {
@@ -243,6 +282,7 @@
     padding: 8px 12px;
     border-radius: 35px;
     font-size: 14px;
+    line-height: 16px;
     color: #121417;
     border: 1px solid rgba(18, 20, 23, 0.2);
     background-color: transparent;
@@ -280,10 +320,18 @@
     transition: transform 0.15s ease;
   }
 
+  @media (min-width: 768px) and (max-width: 1439px) {
+    .metaItems {
+      overflow-x: visible;
+      flex-wrap: wrap;
+    }
+  }
+
   @media (min-width: 1440px) {
     .card {
       flex-direction: row;
       gap: 48px;
+      min-height: 328px;
       padding: 24px;
     }
 
@@ -313,14 +361,35 @@
     }
 
     .header {
+      display: flex;
       flex-direction: row;
       align-items: flex-start;
-      gap: 24px;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .nameBlock {
+      order: 1;
     }
 
     .metaRow {
-      flex-direction: row;
-      gap: 64px;
+      order: 2;
+      flex: 1;
+      align-items: flex-start;
+      justify-content: flex-end;
+    }
+
+    .metaItems {
+      overflow-x: visible;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex: 1;
+    }
+
+    .heartBtn {
+      order: 3;
+      margin-left: 64px;
+      justify-self: auto;
     }
 
     .bookBtn {

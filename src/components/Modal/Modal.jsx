@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import styles from './Modal.module.css';
 import { createPortal } from 'react-dom';
+import { lockBodyScroll, unlockBodyScroll } from '../../utils/bodyScrollLock';
 
 
 function Modal({ isOpen, onClose, children }) {
@@ -11,13 +12,15 @@ function Modal({ isOpen, onClose, children }) {
     };
 
     if (isOpen) {
-    window.addEventListener('keydown', handleEsc);
-    document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleEsc);
+      lockBodyScroll();
     }
 
     return () => {
       window.removeEventListener('keydown', handleEsc);
-      document.body.style.overflow = '';
+      if (isOpen) {
+        unlockBodyScroll();
+      }
     };
   }, [isOpen, onClose]);
 

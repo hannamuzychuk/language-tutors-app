@@ -12,8 +12,9 @@ export const loginSchema = yup.object({
 });
 
 export const registerSchema = loginSchema.shape({
-    confirmPassword: yup
+  name: yup
     .string()
-    .oneOf([yup.ref('password')], 'Password must match')
-    .required('Confirm password is required'),
+    .trim()
+    .min(2, 'Name must be at least 2 characters')
+    .required('Name is required'),
 });

@@ -99,3 +99,12 @@
   outline: 2px solid #121417;
   outline-offset: -2px;
 }
+
+@media (max-width: 768px) {
+  .trigger {
+    justify-content: center;
+    box-sizing: border-box;
+    height: 44px;
+    padding: 0 12px;
+  }
+}

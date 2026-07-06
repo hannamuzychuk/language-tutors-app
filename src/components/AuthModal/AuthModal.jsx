@@ -25,7 +25,7 @@ function AuthModalForm({ isRegister, onClose, onToggleModal, colors }) {
     setIsSubmitting(true);
     try {
       if (isRegister) {
-        await registerUser(data.email, data.password);
+        await registerUser(data.email, data.password, data.name);
       } else {
         await loginUser(data.email, data.password);
       }

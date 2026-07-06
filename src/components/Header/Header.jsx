@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IoClose, IoMenu } from 'react-icons/io5';
 import { useAuth } from '../../context/AuthContext';
 import { THEME_COLORS } from '../../config/themeColors';
 import { useTheme } from '../../context/ThemeContext';
 import { logoutUser } from '../../firebase/authService';
+import { forceUnlockBodyScroll, lockBodyScroll, unlockBodyScroll } from '../../utils/bodyScrollLock';
 import AuthModal from '../AuthModal/AuthModal';
 import Modal from '../Modal/Modal';
 import LoginIcon from '../icons/LoginIcon';
@@ -17,11 +18,18 @@ function Header() {
   const { theme } = useTheme();
   const colors = THEME_COLORS[theme];
   const location = useLocation();
+  const navigate = useNavigate();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState('login');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const closeMenu = () => setIsMenuOpen(false);
+
+  const handleMobileNav = (path) => {
+    closeMenu();
+    forceUnlockBodyScroll();
+    navigate(path);
+  };
 
   const openLoginModal = () => {
     setAuthMode('login');
@@ -43,11 +51,14 @@ function Header() {
   };
 
   useEffect(() => {
-    closeMenu();
+    setIsMenuOpen(false);
+    forceUnlockBodyScroll();
   }, [location.pathname]);
 
+  useEffect(() => () => forceUnlockBodyScroll(), []);
+
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const mediaQuery = window.matchMedia('(min-width: 769px)');
     const handleViewportChange = () => {
       if (mediaQuery.matches) closeMenu();
     };
@@ -63,26 +74,11 @@ function Header() {
       if (event.key === 'Escape') closeMenu();
     };
 
-    const scrollY = window.scrollY;
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.width = '100%';
-    document.body.style.overflow = 'hidden';
-
+    lockBodyScroll();
     window.addEventListener('keydown', onKeyDown);
 
     return () => {
-      document.documentElement.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-      window.scrollTo(0, scrollY);
+      unlockBodyScroll();
       window.removeEventListener('keydown', onKeyDown);
     };
   }, [isMenuOpen]);
@@ -180,16 +176,16 @@ function Header() {
             </button>
 
             <nav className={styles.mobileNav} aria-label="Mobile navigation">
-              <Link to="/" onClick={closeMenu}>
+              <button type="button" className={styles.mobileNavLink} onClick={() => handleMobileNav('/')}>
                 Home
-              </Link>
-              <Link to="/teachers" onClick={closeMenu}>
+              </button>
+              <button type="button" className={styles.mobileNavLink} onClick={() => handleMobileNav('/teachers')}>
                 Teachers
-              </Link>
+              </button>
               {user && (
-                <Link to="/favorites" onClick={closeMenu}>
+                <button type="button" className={styles.mobileNavLink} onClick={() => handleMobileNav('/favorites')}>
                   Favorites
-                </Link>
+                </button>
               )}
             </nav>
 

@@ -6,6 +6,7 @@ import TeachersFilters from '../../components/TeachersFilter/TeachersFilters';
 import TeacherCard from '../../components/TeacherCard/TeacherCard';
 import { getTeachersBatch } from '../../firebase/teachersService';
 import { levelsMatch, getTeacherLevels } from '../../utils/levelUtils';
+import { getTeacherLanguages } from '../../utils/teacherUtils';
 import Modal from '../../components/Modal/Modal';
 import BookingModal from '../../components/BookingModal/BookingModal';
 import AuthModal from '../../components/AuthModal/AuthModal';
@@ -31,24 +32,35 @@ function TeachersPage() {
     const [authModalMessage, setAuthModalMessage] = useState('');
 
     useEffect(() => {
+        let isMounted = true;
+
         const loadInitialTeachers = async () => {
             try {
                 await withLoading(LOADING_KEYS.TEACHERS, async () => {
                     const { teachers: batch, lastKey: key, hasMore: more } = await getTeachersBatch();
+                    if (!isMounted) return;
                     setTeachers(batch);
                     setLastKey(key);
                     setHasMore(more);
                 });
             } catch (error) {
-                showError(error.message || 'Failed to load teachers.');
+                if (isMounted) {
+                    showError(error.message || 'Failed to load teachers.');
+                }
             }
         };
 
         loadInitialTeachers();
+
+        return () => {
+            isMounted = false;
+        };
     }, [withLoading, showError, LOADING_KEYS.TEACHERS]);
 
     const filteredTeachers = teachers.filter((teacher) => {
-        if (filters.language && !teacher.languages.includes(filters.language)) return false;
+        const languages = getTeacherLanguages(teacher.languages);
+
+        if (filters.language && !languages.includes(filters.language)) return false;
         if (filters.level) {
             const hasLevel = getTeacherLevels(teacher.levels).some((level) =>
                 levelsMatch(level, filters.level)

@@ -101,6 +101,8 @@
   z-index: 500;
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 24px;
   height: 100dvh;
   overflow: hidden;
   overscroll-behavior: none;
@@ -126,10 +128,11 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 375px;
-  height: 100%;
-  max-height: 100dvh;
+  height: calc(100dvh - 48px);
+  max-height: calc(100dvh - 48px);
   padding: 72px 24px max(32px, env(safe-area-inset-bottom));
   overflow: hidden;
+  border-radius: 24px;
   background-color: #ffffff;
   box-shadow: 0 0 32px rgba(18, 20, 23, 0.12);
   animation: menuFadeIn 0.25s ease;
@@ -186,6 +189,27 @@
   min-height: 0;
 }
 
+.mobileNavLink {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: inherit;
+  color: #121417;
+  text-align: center;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobileNavLink:hover {
+  background-color: rgba(18, 20, 23, 0.06);
+}
+
 .mobileNav a {
   width: 100%;
   padding: 14px 16px;
@@ -195,6 +219,8 @@
   color: #121417;
   text-align: center;
   transition: background-color 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .mobileNav a:hover {
@@ -321,7 +347,7 @@
   color: #121417;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .header {
     padding: 20px 40px;
   }
@@ -360,19 +386,23 @@
   .headerInner {
     position: relative;
     gap: 24px;
+    max-width: 1184px;
   }
 
   .headerLogo {
     flex: 1;
     position: relative;
     z-index: 1;
+    pointer-events: auto;
   }
 
   .headerNav {
     position: absolute;
     left: 50%;
     top: 50%;
+    z-index: 2;
     transform: translate(-50%, -50%);
+    pointer-events: auto;
   }
 
   .headerRight {
@@ -380,6 +410,7 @@
     position: relative;
     z-index: 1;
     justify-content: flex-end;
+    pointer-events: auto;
   }
 
   .userEmail {

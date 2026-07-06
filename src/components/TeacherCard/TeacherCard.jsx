@@ -4,6 +4,7 @@ import bookIcon from '../icons/book-open-01.svg';
 import starIcon from '../icons/Star.svg';
 import styles from './TeacherCard.module.css';
 import { levelsMatch, getTeacherLevels } from '../../utils/levelUtils';
+import { getTeacherLanguages, getTeacherConditions } from '../../utils/teacherUtils';
 
 function getReviewAvatarUrl(review) {
     if (review.reviewer_avatar_url) return review.reviewer_avatar_url;
@@ -52,11 +53,13 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
     const [isExpanded, setIsExpanded] = useState(false);
 
     const levels = getTeacherLevels(teacher.levels);
+    const languages = getTeacherLanguages(teacher.languages);
+    const conditions = getTeacherConditions(teacher.conditions);
 
     return (
         <article className={styles.card}>
             <div className={styles.avatarWrap}>
-                <div className={styles.avatar} style={{ borderColor: colors.accent }}>
+                <div className={styles.avatar} style={{ borderColor: colors.heroImageBg }}>
                     <img
                         className={styles.avatarImage}
                         src={teacher.avatar_url}
@@ -71,6 +74,19 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
                         <p className={styles.language}>Languages</p>
                         <h3 className={styles.name}>{fullName}</h3>
                     </div>
+
+                    <button
+                        type="button"
+                        className={`${styles.heartBtn} ${isFavorite ? styles.heartActive : ''}`}
+                        aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                        onClick={() => onToggleFavorite(teacher)}
+                    >
+                        {isFavorite ? (
+                            <FaHeart size={26} color={colors.accent} />
+                        ) : (
+                            <FaRegHeart size={26} color="#121417" />
+                        )}
+                    </button>
 
                     <div className={styles.metaRow}>
                         <div className={styles.metaItems}>
@@ -95,28 +111,18 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
                             <span className={styles.divider} />
 
                             <span className={styles.metaItem}>
-                                Price / 1 hour: {teacher.price_per_hour}$
+                                Price / 1 hour:{' '}
+                                <span className={styles.priceValue} style={{ color: colors.accent }}>
+                                    {teacher.price_per_hour}$
+                                </span>
                             </span>
                         </div>
-
-                        <button
-                            type="button"
-                            className={`${styles.heartBtn} ${isFavorite ? styles.heartActive : ''}`}
-                            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-                            onClick={() => onToggleFavorite(teacher)}
-                        >
-                            {isFavorite ? (
-                                <FaHeart size={24} color={colors.accent} />
-                            ) : (
-                                <FaRegHeart size={24} color="#121417" />
-                            )}
-                        </button>
                     </div>
                 </div>
                 <div className={styles.details}>
                     <p>
                         <span className={styles.detailLabel}>Speaks:</span>{' '}
-                        <span className={styles.speaksValue}>{teacher.languages.join(', ')}</span>
+                        <span className={styles.speaksValue}>{languages.join(', ')}</span>
                     </p>
                     <p>
                         <span className={styles.detailLabel}>Lesson Info:</span>{' '}
@@ -124,7 +130,7 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
                     </p>
                     <p>
                         <span className={styles.detailLabel}>Conditions:</span>{' '}
-                        <span>{teacher.conditions.join(' ')}</span>
+                        <span>{conditions.join(' ')}</span>
                     </p>
                 </div>
 
@@ -175,8 +181,8 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
                             style={
                                 isActive
                                     ? {
-                                          backgroundColor: colors.highlightBg,
-                                          color: colors.highlightText,
+                                          backgroundColor: colors.btnPrimary,
+                                          color: colors.btnText,
                                       }
                                     : undefined
                             }

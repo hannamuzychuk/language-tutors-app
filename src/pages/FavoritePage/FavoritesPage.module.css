@@ -1,8 +1,8 @@
-.page {
+  .page {
   max-width: 1440px;
   margin: 0 auto;
   padding: 32px 16px 48px;
-  background-color: #f8f8f8;
+  background-color: #f7f7f7;
 }
 
 .title {
@@ -23,6 +23,30 @@
   color: #8a8a89;
 }
 
+.loadMoreBtn {
+  display: block;
+  width: 100%;
+  height: 56px;
+  margin: 24px auto 0;
+  padding: 0 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.loadMoreBtn:hover {
+  opacity: 0.9;
+}
+
+.loadMoreBtn:active {
+  transform: scale(0.98);
+  opacity: 0.85;
+}
+
 @media (min-width: 1440px) {
   .page {
     padding: 96px 64px 80px;
@@ -39,5 +63,12 @@
 
   .empty {
     font-size: 18px;
+  }
+
+  .loadMoreBtn {
+    width: 183px;
+    height: 60px;
+    margin-top: 64px;
+    padding: 0;
   }
 }
