@@ -11,10 +11,16 @@
   border-radius: 12px;
   background-color: #fff;
   cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
 }
 
 .trigger:hover {
   border-color: rgba(18, 20, 23, 0.24);
+  opacity: 0.9;
+}
+
+.trigger:active {
+  transform: scale(0.98);
 }
 
 .swatch {
@@ -64,10 +70,15 @@
   color: #121417;
   text-align: left;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 .option:hover {
   background-color: rgba(18, 20, 23, 0.06);
+}
+
+.option:active {
+  transform: scale(0.99);
 }
 
 .optionActive {

@@ -1,15 +1,17 @@
 .scene {
   position: absolute;
-  left: 88px;
+  left: 50%;
   bottom: 0;
-  width: 391px;
+  width: min(100%, 320px);
+  transform: translateX(-50%);
 }
 
 .sticker {
   display: block;
-  width: 339px;
-  margin-left: 26px;
-  margin-bottom: -72px;
+  width: min(100%, 280px);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: -48px;
   object-fit: contain;
   object-position: center bottom;
   pointer-events: none;
@@ -21,4 +23,19 @@
   object-fit: contain;
   object-position: center bottom;
   pointer-events: none;
+}
+
+@media (min-width: 1440px) {
+  .scene {
+    left: 88px;
+    width: 391px;
+    transform: none;
+  }
+
+  .sticker {
+    width: 339px;
+    margin-left: 26px;
+    margin-right: 0;
+    margin-bottom: -72px;
+  }
 }

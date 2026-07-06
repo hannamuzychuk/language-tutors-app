@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useError } from '../context/ErrorContext';
-import { useLoading } from '../context/LoadingContext';
+import { useAuth } from './AuthContext.jsx';
+import { useError } from './ErrorContext.jsx';
+import { useLoading } from './LoadingContext.jsx';
 import {
     subscribeFavorite,
     addFavorite,

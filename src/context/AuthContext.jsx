@@ -17,8 +17,8 @@ useEffect(() => {
 }, []);
 return (
     <AuthContext.Provider value={{ user, loading }}>
-        {!loading && children}
-        </AuthContext.Provider>
+        {children}
+    </AuthContext.Provider>
 );
 }
 

@@ -1,12 +1,15 @@
 .header {
-  padding: 20px 64px;
+  position: relative;
+  z-index: 100;
+  padding: 16px;
 }
 
 .headerInner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
   max-width: 1312px;
   margin: 0 auto;
 }
@@ -14,8 +17,8 @@
 .headerLogo {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 8px;
-  flex: 1;
   font-size: 18px;
   font-weight: 600;
   color: #121417;
@@ -27,8 +30,12 @@
   flex-shrink: 0;
 }
 
+.headerNav,
+.headerRight {
+  display: none;
+}
+
 .headerNav {
-  display: flex;
   align-items: center;
   justify-content: center;
   gap: 28px;
@@ -45,17 +52,208 @@
 }
 
 .headerRight {
-  display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 20px;
-  flex: 1;
 }
 
 .headerAuth {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.headerMobileBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.burgerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(18, 20, 23, 0.12);
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: #121417;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+}
+
+.burgerBtn:hover {
+  border-color: rgba(18, 20, 23, 0.24);
+  opacity: 0.9;
+}
+
+.burgerBtn:active {
+  transform: scale(0.98);
+  opacity: 0.85;
+}
+
+.mobileMenu {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  justify-content: center;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.mobileBackdrop {
+  display: block;
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: none;
+  background: rgba(18, 20, 23, 0.5);
+  cursor: pointer;
+}
+
+.mobilePanel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 375px;
+  height: 100%;
+  max-height: 100dvh;
+  padding: 72px 24px max(32px, env(safe-area-inset-bottom));
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 0 32px rgba(18, 20, 23, 0.12);
+  animation: menuFadeIn 0.25s ease;
+}
+
+.mobileCloseBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(18, 20, 23, 0.12);
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: #121417;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+}
+
+.mobileCloseBtn:hover {
+  border-color: rgba(18, 20, 23, 0.24);
+  opacity: 0.9;
+}
+
+.mobileCloseBtn:active {
+  transform: scale(0.98);
+  opacity: 0.85;
+}
+
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.mobileNav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  min-height: 0;
+}
+
+.mobileNav a {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #121417;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.mobileNav a:hover {
+  background-color: rgba(18, 20, 23, 0.06);
+}
+
+.mobileAuth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.mobileUserEmail {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #8a8a89;
+  text-align: center;
+  word-break: break-all;
+}
+
+.mobileLoginBtn,
+.mobileRegisterBtn,
+.mobileLogoutBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.mobileLoginBtn {
+  background: none;
+  color: #121417;
+}
+
+.mobileLoginBtn:hover,
+.mobileRegisterBtn:hover,
+.mobileLogoutBtn:hover {
+  opacity: 0.9;
+}
+
+.mobileLoginBtn:active,
+.mobileRegisterBtn:active,
+.mobileLogoutBtn:active {
+  transform: scale(0.98);
+  opacity: 0.85;
 }
 
 .loginBtn {
@@ -68,6 +266,16 @@
   font-weight: 500;
   color: #121417;
   cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.loginBtn:hover {
+  opacity: 0.8;
+}
+
+.loginBtn:active {
+  transform: scale(0.98);
+  opacity: 0.7;
 }
 
 .registerBtn {
@@ -77,6 +285,16 @@
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.registerBtn:hover {
+  opacity: 0.9;
+}
+
+.registerBtn:active {
+  transform: scale(0.98);
+  opacity: 0.85;
 }
 
 .logoutBtn {
@@ -86,14 +304,90 @@
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.2s ease, transform 0.15s ease;
 }
 
 .logoutBtn:hover {
   opacity: 0.88;
 }
 
+.logoutBtn:active {
+  transform: scale(0.98);
+  opacity: 0.8;
+}
+
 .userEmail {
   font-size: 14px;
   color: #121417;
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 20px 40px;
+  }
+
+  .headerLogo {
+    flex: 1;
+  }
+
+  .headerNav,
+  .headerRight {
+    display: flex;
+  }
+
+  .headerMobileBar {
+    display: none;
+  }
+
+  .userEmail {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .registerBtn,
+  .logoutBtn {
+    padding: 14px 24px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .header {
+    padding: 20px 64px;
+  }
+
+  .headerInner {
+    position: relative;
+    gap: 24px;
+  }
+
+  .headerLogo {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .headerNav {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .headerRight {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    justify-content: flex-end;
+  }
+
+  .userEmail {
+    max-width: none;
+  }
+
+  .registerBtn,
+  .logoutBtn {
+    padding: 14px 40px;
+  }
 }

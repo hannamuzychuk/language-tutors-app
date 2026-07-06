@@ -11,15 +11,15 @@ import { ErrorProvider } from './context/ErrorContext.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
-      <AuthProvider>
+      <ErrorProvider>
         <LoadingProvider>
-          <ErrorProvider>
+          <AuthProvider>
             <FavoritesProvider>
               <App />
             </FavoritesProvider>
-          </ErrorProvider>
+          </AuthProvider>
         </LoadingProvider>
-      </AuthProvider>
+      </ErrorProvider>
     </ThemeProvider>
   </StrictMode>,
 )

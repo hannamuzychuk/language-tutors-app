@@ -1,19 +1,19 @@
 .authModal {
-    padding: 64px;
+    padding: 32px 24px;
     background: #ffffff;
-    border-radius: 30px;
+    border-radius: 24px;
     color: #121417;
   }
   
   .title {
-    margin: 0 0 20px;
-    font-size: 32px;
+    margin: 0 0 16px;
+    font-size: 28px;
     font-weight: 700;
     line-height: 1.2;
   }
   
   .subtitle {
-    margin: 0 0 40px;
+    margin: 0 0 32px;
     font-size: 16px;
     line-height: 1.4;
     color: rgba(18, 20, 23, 0.8);
@@ -71,6 +71,16 @@
     font-size: 18px;
     font-weight: 500;
     cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+  }
+
+  .submitBtn:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  .submitBtn:active:not(:disabled) {
+    transform: scale(0.98);
+    opacity: 0.85;
   }
 
   .submitBtn:disabled {
@@ -87,10 +97,35 @@
     font-size: 14px;
     text-decoration: underline;
     cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .toggleBtn:hover {
+    opacity: 0.8;
+  }
+
+  .toggleBtn:active {
+    opacity: 0.65;
   }
   
   .error {
     margin: 0;
     font-size: 14px;
     color: #e53935;
+  }
+
+  @media (min-width: 1440px) {
+    .authModal {
+      padding: 64px;
+      border-radius: 30px;
+    }
+
+    .title {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      margin-bottom: 40px;
+    }
   }

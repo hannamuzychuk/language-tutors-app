@@ -27,7 +27,7 @@ function TeachersFilters({onChange}) {
     return (
         <div className={styles.filters}>
             <div className={styles.filterGroup}>
-                <label className={styles.label} htmlFor="lanquage-filter">Language</label>
+                <label className={styles.label} htmlFor="language-filter">Languages</label>
                 <select className={styles.select} id="language-filter" value={language} onChange={handleLanguageChange}>
                     <option value="">All</option>
                     <option value="English">English</option>
