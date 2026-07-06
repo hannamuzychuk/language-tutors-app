@@ -211,6 +211,11 @@
     background-color: transparent;
   }
 
+  .levelTagActive {
+    border: none;
+    font-weight: 500;
+  }
+
   .bookBtn {
     align-self: flex-start;
     width: 232px;

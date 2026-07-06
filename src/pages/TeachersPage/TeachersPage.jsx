@@ -5,6 +5,7 @@ import styles from './TeachersPage.module.css';
 import TeachersFilters from '../../components/TeachersFilter/TeachersFilters';
 import TeacherCard from '../../components/TeacherCard/TeacherCard';
 import { getTeachersBatch } from '../../firebase/teachersService';
+import { levelsMatch, getTeacherLevels } from '../../utils/levelUtils';
 import Modal from '../../components/Modal/Modal';
 import BookingModal from '../../components/BookingModal/BookingModal';
 import AuthModal from '../../components/AuthModal/AuthModal';
@@ -42,9 +43,8 @@ function TeachersPage() {
     const filteredTeachers = teachers.filter((teacher) => {
         if (filters.language && !teacher.languages.includes(filters.language)) return false;
         if (filters.level) {
-            const normalizedFilter = filters.level.replace(/-/g, ' ');
-            const hasLevel = teacher.levels.some(
-                (level) => level.replace(/-/g, ' ') === normalizedFilter
+            const hasLevel = getTeacherLevels(teacher.levels).some((level) =>
+                levelsMatch(level, filters.level)
             );
             if (!hasLevel) return false;
         }
@@ -114,6 +114,7 @@ function TeachersPage() {
                         onBookLesson={openBookingModal}
                         isFavorite={isFavorite(teacher)}
                         onToggleFavorite={handleToggleFavorite}
+                        activeLevel={filters.level}
                     />
                 ))}
 

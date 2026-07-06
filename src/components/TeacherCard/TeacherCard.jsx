@@ -3,6 +3,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import bookIcon from '../icons/book-open-01.svg';
 import starIcon from '../icons/Star.svg';
 import styles from './TeacherCard.module.css';
+import { levelsMatch, getTeacherLevels } from '../../utils/levelUtils';
 
 function getReviewAvatarUrl(review) {
     if (review.reviewer_avatar_url) return review.reviewer_avatar_url;
@@ -13,10 +14,12 @@ function getReviewAvatarUrl(review) {
     return null;
 }
 
-function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorite}) {
+function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorite, activeLevel = ''}) {
 
     const fullName = `${teacher.name} ${teacher.surname}`;
     const [isExpanded, setIsExpanded] = useState(false);
+
+    const levels = getTeacherLevels(teacher.levels);
 
     return (
         <article className={styles.card}>
@@ -134,19 +137,28 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
                 
 
                 <div className={styles.levels}>
-                    {teacher.levels.map((level, index) => (
+                    {levels.map((level, index) => {
+                        const isActive = activeLevel
+                            ? levelsMatch(level, activeLevel)
+                            : index === 0;
+
+                        return (
                         <span
-                            key={level}
-                            className={styles.levelTag}
+                            key={`${level}-${index}`}
+                            className={`${styles.levelTag} ${isActive ? styles.levelTagActive : ''}`}
                             style={
-                                index === 0
-                                    ? { backgroundColor: colors.accent, border: 'none' }
+                                isActive
+                                    ? {
+                                          backgroundColor: colors.highlightBg,
+                                          color: colors.highlightText,
+                                      }
                                     : undefined
                             }
                         >
                             #{level}
                         </span>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {isExpanded && (
