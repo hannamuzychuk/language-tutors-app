@@ -41,7 +41,13 @@ function TeachersPage() {
 
     const filteredTeachers = teachers.filter((teacher) => {
         if (filters.language && !teacher.languages.includes(filters.language)) return false;
-        if (filters.level && !teacher.levels.includes(filters.level)) return false;
+        if (filters.level) {
+            const normalizedFilter = filters.level.replace(/-/g, ' ');
+            const hasLevel = teacher.levels.some(
+                (level) => level.replace(/-/g, ' ') === normalizedFilter
+            );
+            if (!hasLevel) return false;
+        }
         if (filters.price && teacher.price_per_hour > parseInt(filters.price)) return false;
         return true;
     });
