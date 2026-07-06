@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema, loginSchema } from '../../validation/authSchema';
 import { registerUser, loginUser } from '../../firebase/authService';
+import { useTheme } from '../../context/ThemeContext';
+import { THEME_COLORS } from '../../config/themeColors';
 import AuthForm from './AuthForm';
 import styles from './AuthModal.module.css'; 
 
-function AuthModalForm({ isRegister, onClose, onToggleModal }) {
+function AuthModalForm({ isRegister, onClose, onToggleModal, colors }) {
   const [authError, setAuthError] = useState('');
 
   const {
@@ -42,6 +44,7 @@ function AuthModalForm({ isRegister, onClose, onToggleModal }) {
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
         styles={styles}
+        colors={colors}
       />
 
       {authError && <p className={styles.error}>{authError}</p>}
@@ -57,6 +60,8 @@ function AuthModalForm({ isRegister, onClose, onToggleModal }) {
 
 function AuthModal({ onClose, initialMode = 'login', message }) {
   const [isRegister, setIsRegister] = useState(initialMode === 'register');
+  const { theme } = useTheme();
+  const colors = THEME_COLORS[theme];
 
   const toggleMode = () => setIsRegister((prev) => !prev);
 
@@ -75,6 +80,7 @@ function AuthModal({ onClose, initialMode = 'login', message }) {
         isRegister={isRegister}
         onClose={onClose}
         onToggleModal={toggleMode}
+        colors={colors}
       />
     </div>
   );

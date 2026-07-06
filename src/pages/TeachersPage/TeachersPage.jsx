@@ -145,6 +145,7 @@ function TeachersPage() {
                         colors={colors}
                         onClose={closeBookingModal}
                         onRequireAuth={handleBookingRequireAuth}
+                        selectedLanguage={filters.language}
                     />
                 )}
             </Modal>

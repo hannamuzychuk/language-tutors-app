@@ -4,7 +4,8 @@ function AuthForm({
     onSubmit,
     handleSubmit,
     errors,
-    styles
+    styles,
+    colors,
 }) {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
@@ -52,7 +53,14 @@ function AuthForm({
                 </div>
             )}
 
-            <button type="submit" className={styles.submitBtn}>
+            <button
+                type="submit"
+                className={styles.submitBtn}
+                style={{
+                    backgroundColor: colors.btnPrimary,
+                    color: colors.btnText,
+                }}
+            >
                 {isRegister ? 'Register' : 'Login'}
             </button>
         </form>

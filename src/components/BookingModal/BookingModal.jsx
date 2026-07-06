@@ -15,7 +15,7 @@ const REASONS = [
     'Culture, travel or hobby',
   ];
 
-function BookingModal({ teacher, colors, onClose, onRequireAuth }) {
+function BookingModal({ teacher, colors, onClose, onRequireAuth, selectedLanguage = '' }) {
     const { user } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(bookingSchema),
@@ -23,7 +23,10 @@ function BookingModal({ teacher, colors, onClose, onRequireAuth }) {
 
     const [submitError, setSubmitError] = useState('');
 
-    const language = teacher.languages[0];
+    const language =
+        selectedLanguage && teacher.languages.includes(selectedLanguage)
+            ? selectedLanguage
+            : teacher.languages[0];
 
     const onSubmit = async (data) => {
         if (!user) {

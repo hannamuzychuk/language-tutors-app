@@ -14,6 +14,38 @@ function getReviewAvatarUrl(review) {
     return null;
 }
 
+function formatRating(value) {
+    const numeric = Number(value);
+    if (!Number.isNaN(numeric)) {
+        return numeric.toFixed(1);
+    }
+    return String(value ?? '').replace(',', '.');
+}
+
+function ReviewAvatar({ review, styles }) {
+    const [hasError, setHasError] = useState(false);
+    const reviewAvatarUrl = getReviewAvatarUrl(review);
+
+    if (!reviewAvatarUrl || hasError) {
+        return (
+            <span className={styles.reviewAvatarFallback}>
+                {review.reviewer_name[0]}
+            </span>
+        );
+    }
+
+    return (
+        <img
+            className={styles.reviewAvatar}
+            src={reviewAvatarUrl}
+            alt={review.reviewer_name}
+            width={44}
+            height={44}
+            onError={() => setHasError(true)}
+        />
+    );
+}
+
 function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorite, activeLevel = ''}) {
 
     const fullName = `${teacher.name} ${teacher.surname}`;
@@ -24,18 +56,19 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
     return (
         <article className={styles.card}>
             <div className={styles.avatarWrap}>
-                <img
-                    className={styles.avatar}
-                    src={teacher.avatar_url}
-                    alt={fullName}
-                    style={{ borderColor: colors.accent }}
-                />
+                <div className={styles.avatar} style={{ borderColor: colors.accent }}>
+                    <img
+                        className={styles.avatarImage}
+                        src={teacher.avatar_url}
+                        alt={fullName}
+                    />
+                </div>
                 <span className={styles.onlineDot} />
             </div>
             <div className={styles.content}>
                 <div className={styles.header}>
                     <div className={styles.nameBlock}>
-                        <p className={styles.language}>{teacher.languages[0]}</p>
+                        <p className={styles.language}>Languages</p>
                         <h3 className={styles.name}>{fullName}</h3>
                     </div>
 
@@ -56,7 +89,7 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
 
                             <span className={styles.metaItem}>
                                 <img src={starIcon} alt="" aria-hidden="true" className={styles.icon} width={16} height={16} />
-                                Rating: {teacher.rating}
+                                Rating: {formatRating(teacher.rating)}
                             </span>
 
                             <span className={styles.divider} />
@@ -81,9 +114,18 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
                     </div>
                 </div>
                 <div className={styles.details}>
-                    <p>Speaks: {teacher.languages.join(', ')}</p>
-                    <p>Lesson Info: {teacher.lesson_info}</p>
-                    <p>Conditions: {teacher.conditions.join(' ')}</p>
+                    <p>
+                        <span className={styles.detailLabel}>Speaks:</span>{' '}
+                        <span className={styles.speaksValue}>{teacher.languages.join(', ')}</span>
+                    </p>
+                    <p>
+                        <span className={styles.detailLabel}>Lesson Info:</span>{' '}
+                        <span>{teacher.lesson_info}</span>
+                    </p>
+                    <p>
+                        <span className={styles.detailLabel}>Conditions:</span>{' '}
+                        <span>{teacher.conditions.join(' ')}</span>
+                    </p>
                 </div>
 
                 {isExpanded && (
@@ -92,37 +134,21 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
 
                 {isExpanded && teacher.reviews?.length > 0 && (
                     <div className={styles.reviews}>
-                        {teacher.reviews.map((review, index) => {
-                            const reviewAvatarUrl = getReviewAvatarUrl(review);
-
-                            return (
+                        {teacher.reviews.map((review, index) => (
                             <article key={index} className={styles.review}>
                                 <div className={styles.reviewUser}>
-                                    {reviewAvatarUrl ? (
-                                        <img
-                                            className={styles.reviewAvatar}
-                                            src={reviewAvatarUrl}
-                                            alt={review.reviewer_name}
-                                            width={44}
-                                            height={44}
-                                        />
-                                    ) : (
-                                        <span className={styles.reviewAvatarFallback}>
-                                            {review.reviewer_name[0]}
-                                        </span>
-                                    )}
+                                    <ReviewAvatar review={review} styles={styles} />
                                     <div>
                                         <p className={styles.reviewName}>{review.reviewer_name}</p>
                                         <div className={styles.reviewRating}>
                                             <img src={starIcon} alt="" aria-hidden="true" className={styles.icon} width={16} height={16} />
-                                            <span>{review.reviewer_rating}</span>
+                                            <span>{formatRating(review.reviewer_rating)}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <p className={styles.reviewComment}>{review.comment}</p>
                             </article>
-                            );
-                        })}
+                        ))}
                     </div>
                 )}
 

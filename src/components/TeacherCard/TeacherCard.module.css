@@ -14,11 +14,21 @@
   }
 
   .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    object-fit: cover;
     border: 3px solid;
+    background-color: #ffffff;
+  }
+
+  .avatarImage {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 
   .onlineDot {
@@ -108,6 +118,15 @@
     font-size: 16px;
     line-height: 24px;
     color: #121417;
+  }
+
+  .detailLabel {
+    color: #8a8a89;
+  }
+
+  .speaksValue {
+    font-weight: 500;
+    text-decoration: underline;
   }
 
   .experience {
