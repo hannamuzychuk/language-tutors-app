@@ -69,70 +69,81 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
                 <span className={styles.onlineDot} />
             </div>
             <div className={styles.content}>
-                <div className={styles.header}>
-                    <div className={styles.nameBlock}>
-                        <p className={styles.language}>Languages</p>
-                        <h3 className={styles.name}>{fullName}</h3>
-                    </div>
-
-                    <button
-                        type="button"
-                        className={`${styles.heartBtn} ${isFavorite ? styles.heartActive : ''}`}
-                        aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-                        onClick={() => onToggleFavorite(teacher)}
-                    >
-                        {isFavorite ? (
-                            <FaHeart size={26} color={colors.accent} />
-                        ) : (
-                            <FaRegHeart size={26} color="#121417" />
-                        )}
-                    </button>
-
-                    <div className={styles.metaRow}>
-                        <div className={styles.metaItems}>
-                            <span className={styles.metaItem}>
-                                <img src={bookIcon} alt="" aria-hidden="true" className={styles.icon} width={16} height={16} />
-                                Lessons online
-                            </span>
-
-                            <span className={styles.divider} />
-
-                            <span className={styles.metaItem}>
-                                Lessons done: {teacher.lessons_done}
-                            </span>
-
-                            <span className={styles.divider} />
-
-                            <span className={styles.metaItem}>
-                                <img src={starIcon} alt="" aria-hidden="true" className={styles.icon} width={16} height={16} />
-                                Rating: {formatRating(teacher.rating)}
-                            </span>
-
-                            <span className={styles.divider} />
-
-                            <span className={styles.metaItem}>
-                                Price / 1 hour:{' '}
-                                <span className={styles.priceValue} style={{ color: colors.accent }}>
-                                    {teacher.price_per_hour}$
-                                </span>
-                            </span>
+                <div className={styles.topSection}>
+                    <div className={styles.header}>
+                        <div className={styles.nameBlock}>
+                            <p className={styles.language}>Languages</p>
+                            <p className={styles.name}>{fullName}</p>
                         </div>
+
+                        <div className={styles.metaRow}>
+                            <div className={styles.metaItems}>
+                                <span className={styles.metaItem}>
+                                    <img src={bookIcon} alt="" aria-hidden="true" className={styles.icon} width={16} height={16} />
+                                    Lessons online
+                                </span>
+
+                                <span className={styles.divider} />
+
+                                <span className={styles.metaItem}>
+                                    Lessons done: {teacher.lessons_done}
+                                </span>
+
+                                <span className={styles.divider} />
+
+                                <span className={styles.metaItem}>
+                                    <img src={starIcon} alt="" aria-hidden="true" className={styles.icon} width={16} height={16} />
+                                    Rating: {formatRating(teacher.rating)}
+                                </span>
+
+                                <span className={styles.divider} />
+
+                                <span className={styles.metaItem}>
+                                    Price / 1 hour:{' '}
+                                    <span className={styles.priceValue} style={{ color: colors.accent }}>
+                                        {teacher.price_per_hour}$
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            className={`${styles.heartBtn} ${isFavorite ? styles.heartActive : ''}`}
+                            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                            onClick={() => onToggleFavorite(teacher)}
+                        >
+                            {isFavorite ? (
+                                <FaHeart size={26} color={colors.accent} />
+                            ) : (
+                                <FaRegHeart size={26} color="#121417" />
+                            )}
+                        </button>
+                    </div>
+
+                    <div className={styles.details}>
+                        <p>
+                            <span className={styles.detailLabel}>Speaks:</span>{' '}
+                            <span className={styles.speaksValue}>{languages.join(', ')}</span>
+                        </p>
+                        <p>
+                            <span className={styles.detailLabel}>Lesson Info:</span>{' '}
+                            <span className={styles.detailValue}>{teacher.lesson_info}</span>
+                        </p>
+                        <p>
+                            <span className={styles.detailLabel}>Conditions:</span>{' '}
+                            <span className={styles.detailValue}>{conditions.join(' ')}</span>
+                        </p>
                     </div>
                 </div>
-                <div className={styles.details}>
-                    <p>
-                        <span className={styles.detailLabel}>Speaks:</span>{' '}
-                        <span className={styles.speaksValue}>{languages.join(', ')}</span>
-                    </p>
-                    <p>
-                        <span className={styles.detailLabel}>Lesson Info:</span>{' '}
-                        <span>{teacher.lesson_info}</span>
-                    </p>
-                    <p>
-                        <span className={styles.detailLabel}>Conditions:</span>{' '}
-                        <span>{conditions.join(' ')}</span>
-                    </p>
-                </div>
+
+                <button
+                    type="button"
+                    className={styles.readMoreBtn}
+                    onClick={() => setIsExpanded(!isExpanded)}
+                >
+                    {isExpanded ? 'Read less' : 'Read more'}
+                </button>
 
                 {isExpanded && (
                     <p className={styles.experience}>{teacher.experience}</p>
@@ -157,16 +168,6 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
                         ))}
                     </div>
                 )}
-
-                <button
-                    type="button"
-                    className={styles.readMoreBtn}
-                    onClick={() => setIsExpanded(!isExpanded)}
-                >
-                    {isExpanded ? 'Read less' : 'Read more'}
-                </button>
-
-                
 
                 <div className={styles.levels}>
                     {levels.map((level, index) => {

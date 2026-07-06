@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { lockBodyScroll, unlockBodyScroll } from '../../utils/bodyScrollLock';
 
 
-function Modal({ isOpen, onClose, children }) {
+function Modal({ isOpen, onClose, children, fullHeight = false }) {
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === 'Escape') onClose();
@@ -27,8 +27,14 @@ function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className={styles.backdrop} onClick={onClose}>
-      <div className={styles.content} onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`${styles.backdrop} ${fullHeight ? styles.backdropFullHeight : ''}`}
+      onClick={onClose}
+    >
+      <div
+        className={`${styles.content} ${fullHeight ? styles.contentFullHeight : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
       <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close">
         <IoClose />
       </button>

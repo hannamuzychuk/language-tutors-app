@@ -1,152 +1,210 @@
 .bookingModal {
-    background: #fff;
-    border-radius: 24px;
-    padding: 32px 24px;
-  }
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 24px;
+  padding: 32px 48px 32px 32px;
+}
 
-  .question {
-    margin: 32px 0 16px;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #121417;
-  }
-  
-  .reasons {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .radioLabel {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .error {
-    margin: 8px 0 0;
-    font-size: 14px;
-    color: #e53935;
-  }
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
 
-  .form {
-    display: flex;
-    flex-direction: column;
-  }
-  .inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    margin-top: 32px;
-  }
-  
-  .input::placeholder {
-    color: rgba(18, 20, 23, 0.5);
-  }
-  
-  .input:focus {
-    outline: none;
-    border-color: rgba(18, 20, 23, 0.3);
-  }
-  
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .input {
-    width: 100%;
-    height: 54px;
-    padding: 0 18px;
-    border: 1px solid rgba(18, 20, 23, 0.1);
-    border-radius: 12px;
-    font-size: 16px;
-    color: #121417;
-    box-sizing: border-box;
-  }
+.title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #121417;
+}
 
-  .submitBtn {
-    width: 100%;
-    height: 60px;
-    margin-top: 32px;
-    border: none;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: opacity 0.2s ease, transform 0.15s ease;
-  }
+.subtitle {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.375;
+  color: rgba(18, 20, 23, 0.8);
+}
 
-  .submitBtn:hover:not(:disabled) {
-    opacity: 0.9;
-  }
+.teacher {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
 
-  .submitBtn:active:not(:disabled) {
-    transform: scale(0.98);
-    opacity: 0.85;
-  }
+.teacherAvatar {
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
 
-  .submitBtn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+.teacherLabel {
+  margin: 0;
+  font-size: 14px;
+  line-height: 16px;
+  color: #8a8a89;
+}
+
+.teacherName {
+  margin: 4px 0 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #121417;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.question {
+  margin: 40px 0 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #121417;
+}
+
+.reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.radioInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.radioControl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.radioRing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(18, 20, 23, 0.2);
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.radioRingChecked {
+  border-color: #f4c550;
+}
+
+.radioDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #f4c550;
+}
+
+.radioText {
+  font-size: 16px;
+  line-height: 22px;
+  color: #121417;
+}
+
+.error {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #e53935;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input {
+  width: 100%;
+  height: 54px;
+  padding: 0 18px;
+  border: 1px solid rgba(18, 20, 23, 0.1);
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 22px;
+  color: #121417;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: rgba(18, 20, 23, 0.5);
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(18, 20, 23, 0.3);
+}
+
+.submitBtn {
+  width: 100%;
+  height: 60px;
+  margin-top: 40px;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: scale(0.98);
+  opacity: 0.85;
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .bookingModal {
+    padding: 64px;
+    border-radius: 30px;
   }
 
   .title {
-    margin: 0 0 16px;
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1.2;
-    color: #121417;
+    font-size: 32px;
   }
-  
-  .subtitle {
-    margin: 0 0 32px;
-    font-size: 16px;
-    line-height: 1.4;
-    color: rgba(18, 20, 23, 0.8);
-  }
-
-  .teacher {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  
-  .teacherAvatar {
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-  
-  .teacherLabel {
-    margin: 0;
-    font-size: 14px;
-    line-height: 16px;
-    color: #8a8a89;
-  }
-  
-  .teacherName {
-    margin: 4px 0 0;
-    font-size: 16px;
-    line-height: 24px;
-    color: #121417;
-  }
-
-  @media (min-width: 1440px) {
-    .bookingModal {
-      padding: 64px;
-      border-radius: 30px;
-    }
-
-    .title {
-      font-size: 32px;
-      margin-bottom: 20px;
-    }
-
-    .subtitle {
-      margin-bottom: 40px;
-    }
-  }
+}

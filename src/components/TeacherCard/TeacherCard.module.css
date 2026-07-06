@@ -1,400 +1,433 @@
 .card {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    padding: 20px 16px;
-    border-radius: 24px;
-    background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px 16px;
+  border-radius: 24px;
+  background-color: #ffffff;
+}
+
+.avatarWrap {
+  position: relative;
+  flex-shrink: 0;
+  align-self: center;
+  width: 96px;
+  height: 96px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 3px solid;
+  background-color: #ffffff;
+}
+
+.avatarImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.onlineDot {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #38cd3e;
+  border: 2px solid #ffffff;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.topSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.language {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: #8a8a89;
+}
+
+.name {
+  margin: 0;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+  color: #121417;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'name heart'
+    'meta meta';
+  gap: 16px;
+  align-items: start;
+}
+
+.nameBlock {
+  grid-area: name;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  min-width: 0;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.heartBtn {
+  grid-area: heart;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  justify-self: end;
+  touch-action: manipulation;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.metaRow {
+  grid-area: meta;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  min-height: 24px;
+}
+
+.metaItems {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: nowrap;
+  gap: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.metaItems::-webkit-scrollbar {
+  display: none;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #121417;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.priceValue {
+  font-weight: 500;
+}
+
+.icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+.divider {
+  width: 1px;
+  height: 16px;
+  background-color: rgba(18, 20, 23, 0.2);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.heartBtn:hover {
+  opacity: 0.8;
+}
+
+.heartBtn:active {
+  transform: scale(0.95);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.details p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: #121417;
+}
+
+.detailLabel {
+  font-weight: 400;
+  color: #8a8a89;
+}
+
+.detailValue {
+  font-weight: 500;
+}
+
+.speaksValue {
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.experience {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: #121417;
+}
+
+.readMoreBtn {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  line-height: 24px;
+  color: #121417;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.readMoreBtn:hover {
+  opacity: 0.8;
+}
+
+.readMoreBtn:active {
+  opacity: 0.65;
+}
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reviewUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reviewAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.reviewAvatarFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  font-weight: 500;
+  color: #8a8a89;
+  flex-shrink: 0;
+}
+
+.reviewName {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8a8a89;
+}
+
+.reviewRating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #121417;
+}
+
+.reviewComment {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #121417;
+}
+
+.levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.levelTag {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 8px 12px;
+  border-radius: 35px;
+  font-size: 14px;
+  line-height: 16px;
+  color: #121417;
+  border: 1px solid rgba(18, 20, 23, 0.2);
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+.levelTagActive {
+  border: none;
+  font-weight: 500;
+}
+
+.bookBtn {
+  align-self: stretch;
+  width: 100%;
+  height: 56px;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.bookBtn:hover {
+  opacity: 0.9;
+}
+
+.bookBtn:active {
+  transform: scale(0.98);
+  opacity: 0.85;
+}
+
+.heartActive {
+  transform: scale(1.1);
+  transition: transform 0.15s ease;
+}
+
+@media (min-width: 768px) and (max-width: 1439px) {
+  .metaItems {
+    overflow-x: visible;
+    flex-wrap: wrap;
   }
-  
+}
+
+@media (min-width: 1440px) {
+  .card {
+    flex-direction: row;
+    gap: 48px;
+    max-width: 1184px;
+    padding: 24px;
+  }
+
   .avatarWrap {
-    position: relative;
-    flex-shrink: 0;
-    align-self: center;
-    width: 96px;
-    height: 96px;
+    align-self: flex-start;
+    width: 120px;
+    height: 120px;
   }
 
   .avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    border: 3px solid;
-    background-color: #ffffff;
+    width: 120px;
+    height: 120px;
   }
 
   .avatarImage {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
+    width: 96px;
+    height: 96px;
   }
 
   .onlineDot {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: #38cd3e;
-    border: 2px solid #ffffff;
+    top: 19px;
+    right: 23px;
   }
-  
+
   .content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-  
-  .language {
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-    color: #8a8a89;
-  }
-
-  .name {
-    margin: 8px 0 0;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 500;
-    color: #121417;
-  }
-
-  .header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      'name heart'
-      'meta meta';
-    gap: 16px;
-    align-items: start;
-  }
-
-  .nameBlock {
-    grid-area: name;
-    flex-shrink: 0;
-    min-width: 0;
-  }
-
-  .heartBtn {
-    grid-area: heart;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    flex-shrink: 0;
-    justify-self: end;
-    touch-action: manipulation;
-    transition: opacity 0.2s ease, transform 0.15s ease;
-  }
-
-  .metaRow {
-    grid-area: meta;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    min-height: 24px;
-  }
-
-  .metaItems {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    min-width: 0;
-    flex-wrap: nowrap;
-    gap: 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .metaItems::-webkit-scrollbar {
-    display: none;
-  }
-
-  .metaItem {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    line-height: 24px;
-    color: #121417;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .priceValue {
-    font-weight: 500;
-  }
-
-  .icon {
-    display: block;
-    flex-shrink: 0;
-  }
-
-  .divider {
-    width: 1px;
-    height: 16px;
-    background-color: rgba(18, 20, 23, 0.2);
-    flex-shrink: 0;
-    align-self: center;
-  }
-
-  .heartBtn:hover {
-    opacity: 0.8;
-  }
-
-  .heartBtn:active {
-    transform: scale(0.95);
-  }
-
-  .details {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .details p {
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-    color: #121417;
-  }
-
-  .detailLabel {
-    color: #8a8a89;
-  }
-
-  .speaksValue {
-    font-weight: 500;
-  }
-
-  .experience {
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-    color: #121417;
-  }
-
-  .readMoreBtn {
-    align-self: flex-start;
-    padding: 0;
-    border: none;
-    background: transparent;
-    font-size: 16px;
-    line-height: 24px;
-    color: #121417;
-    text-decoration: underline;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-  }
-
-  .readMoreBtn:hover {
-    opacity: 0.8;
-  }
-
-  .readMoreBtn:active {
-    opacity: 0.65;
-  }
-
-  .reviews {
-    display: flex;
-    flex-direction: column;
     gap: 32px;
   }
 
-  .review {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  .topSection {
+    gap: 32px;
   }
 
-  .reviewUser {
+  .header {
     display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .nameBlock {
+    flex: 0 0 auto;
+  }
+
+  .metaRow {
+    flex: 1 1 auto;
+    justify-content: flex-end;
     align-items: center;
-    gap: 12px;
+    margin-left: auto;
+    min-width: 0;
   }
 
-  .reviewAvatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
+  .metaItems {
+    overflow-x: visible;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    flex: 0 1 auto;
   }
 
-  .reviewAvatarFallback {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background-color: #f8f8f8;
-    font-size: 16px;
-    font-weight: 500;
-    color: #8a8a89;
-    flex-shrink: 0;
-  }
-
-  .reviewName {
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-    color: #8a8a89;
-  }
-
-  .reviewRating {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    line-height: 18px;
-    color: #121417;
-  }
-
-  .reviewComment {
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-    color: #121417;
-  }
-  
-  .levels {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  
-  .levelTag {
-    padding: 8px 12px;
-    border-radius: 35px;
-    font-size: 14px;
-    line-height: 16px;
-    color: #121417;
-    border: 1px solid rgba(18, 20, 23, 0.2);
-    background-color: transparent;
-  }
-
-  .levelTagActive {
-    border: none;
-    font-weight: 500;
+  .heartBtn {
+    flex: 0 0 26px;
+    width: 26px;
+    height: 26px;
+    margin-left: 64px;
+    align-self: center;
+    justify-self: auto;
   }
 
   .bookBtn {
-    align-self: stretch;
-    width: 100%;
-    height: 56px;
-    border: none;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 28px;
-    cursor: pointer;
-    transition: opacity 0.2s ease, transform 0.15s ease;
+    align-self: flex-start;
+    width: 232px;
+    height: 60px;
   }
-
-  .bookBtn:hover {
-    opacity: 0.9;
-  }
-
-  .bookBtn:active {
-    transform: scale(0.98);
-    opacity: 0.85;
-  }
-
-  .heartActive {
-    transform: scale(1.1);
-    transition: transform 0.15s ease;
-  }
-
-  @media (min-width: 768px) and (max-width: 1439px) {
-    .metaItems {
-      overflow-x: visible;
-      flex-wrap: wrap;
-    }
-  }
-
-  @media (min-width: 1440px) {
-    .card {
-      flex-direction: row;
-      gap: 48px;
-      min-height: 328px;
-      padding: 24px;
-    }
-
-    .avatarWrap {
-      align-self: flex-start;
-      width: 120px;
-      height: 120px;
-    }
-
-    .avatar {
-      width: 120px;
-      height: 120px;
-    }
-
-    .avatarImage {
-      width: 96px;
-      height: 96px;
-    }
-
-    .onlineDot {
-      top: 19px;
-      right: 19px;
-    }
-
-    .content {
-      gap: 32px;
-    }
-
-    .header {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 32px;
-    }
-
-    .nameBlock {
-      order: 1;
-    }
-
-    .metaRow {
-      order: 2;
-      flex: 1;
-      align-items: flex-start;
-      justify-content: flex-end;
-    }
-
-    .metaItems {
-      overflow-x: visible;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      flex: 1;
-    }
-
-    .heartBtn {
-      order: 3;
-      margin-left: 64px;
-      justify-self: auto;
-    }
-
-    .bookBtn {
-      align-self: flex-start;
-      width: 232px;
-      height: 60px;
-    }
-  }
+}

@@ -7,14 +7,34 @@
     justify-content: center;
     padding: 16px;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     background: rgba(18, 20, 23, 0.6);
+  }
+
+  .backdropFullHeight {
+    align-items: center;
+    padding: 16px;
+    overflow: hidden;
   }
   
   .content {
     position: relative;
     width: 100%;
-    max-width: 566px;
+    max-width: 600px;
     margin: auto 0;
+  }
+
+  .contentFullHeight {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    width: 100%;
+    max-height: calc(100dvh - 32px);
+    margin: 0 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
   
   .closeBtn {
@@ -51,7 +71,16 @@
       padding: 24px;
     }
 
+    .backdropFullHeight {
+      padding: 24px;
+    }
+
     .content {
       margin: 0;
+    }
+
+    .contentFullHeight {
+      max-height: calc(100dvh - 48px);
+      margin: 0 auto;
     }
   }

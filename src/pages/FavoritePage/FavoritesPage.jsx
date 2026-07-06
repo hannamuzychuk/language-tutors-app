@@ -92,7 +92,7 @@ function FavoritesPage() {
                 </button>
             )}
 
-            <Modal isOpen={isBookingModalOpen} onClose={closeBookingModal}>
+            <Modal isOpen={isBookingModalOpen} onClose={closeBookingModal} fullHeight>
                 {selectedTeacher && (
                     <BookingModal
                         teacher={selectedTeacher}
