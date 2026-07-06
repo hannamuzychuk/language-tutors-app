@@ -4,7 +4,7 @@ LearnLingo is a web application for an online language tutoring platform. Users 
 
 ## Live demo
 
-https://language-tutors-app.vercel.app/teachers
+https://language-tutors-app.vercel.app/
 
 ## Design mockup
 

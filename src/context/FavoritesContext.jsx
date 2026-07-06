@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useError } from '../context/ErrorContext';
+import { useLoading } from '../context/LoadingContext';
 import {
     subscribeFavorite,
     addFavorite,
@@ -11,6 +13,8 @@ const FavoritesContext = createContext();
 
 export function FavoritesProvider({children}) {
     const {user} = useAuth();
+    const { showError } = useError();
+    const { withLoading, LOADING_KEYS } = useLoading();
     const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
@@ -31,10 +35,16 @@ export function FavoritesProvider({children}) {
     const toggleFavorites = async (teacher) => {
         if(!user) return;
 
-        if(isFavorite(teacher)) {
-            await removeFavorite(user.uid, teacher);
-        } else {
-            await addFavorite(user.uid, teacher);
+        try {
+            await withLoading(LOADING_KEYS.FAVORITES, async () => {
+                if(isFavorite(teacher)) {
+                    await removeFavorite(user.uid, teacher);
+                } else {
+                    await addFavorite(user.uid, teacher);
+                }
+            });
+        } catch (error) {
+            showError(error.message || 'Failed to update favorites.');
         }
     }
 
@@ -46,6 +56,10 @@ export function FavoritesProvider({children}) {
 }
 
 export function useFavorites() {
-    return useContext(FavoritesContext);
+    const context = useContext(FavoritesContext);
+    if (!context) {
+        throw new Error('useFavorites must be used within FavoritesProvider');
+    }
+    return context;
 }
 

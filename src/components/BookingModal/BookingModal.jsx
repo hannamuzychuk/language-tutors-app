@@ -5,6 +5,7 @@ import styles from './BookingModal.module.css';
 import { createBooking } from '../../firebase/bookingService';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useError } from '../../context/ErrorContext';
 
 
 const REASONS = [
@@ -17,11 +18,12 @@ const REASONS = [
 
 function BookingModal({ teacher, colors, onClose, onRequireAuth, selectedLanguage = '' }) {
     const { user } = useAuth();
+    const { showError } = useError();
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(bookingSchema),
     });
 
-    const [submitError, setSubmitError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const language =
         selectedLanguage && teacher.languages.includes(selectedLanguage)
@@ -34,32 +36,33 @@ function BookingModal({ teacher, colors, onClose, onRequireAuth, selectedLanguag
             return;
         }
 
+        setIsSubmitting(true);
         try {
-        setSubmitError('');
+            const bookingToSave = {
+                reason: data.reason,
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                teacherName: `${teacher.name} ${teacher.surname}`,
+                teacherId: teacher.id ?? null,
+                createdAt: new Date().toISOString(),
+            };
 
-        const bookingToSave = {
-            reason: data.reason,
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            teacherName: `${teacher.name} ${teacher.surname}`,
-            teacherId: teacher.id ?? null,
-            createdAt: new Date().toISOString(),
-        };
-
-        await createBooking(bookingToSave);
-        onClose();
-    } catch (error) {
-        setSubmitError(error.message || 'Failed to book the lesson. Please try again.');
-    }
-};
+            await createBooking(bookingToSave);
+            onClose();
+        } catch (error) {
+            showError(error.message || 'Failed to book the lesson. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className={styles.bookingModal}>
             <h2 className={styles.title}>Book a trial lesson</h2>
             <p className={styles.subtitle}>Our experienced tutor will assess your current language level, discuss your learning goals, and tailor the lesson to your specific needs.</p>
             <div className={styles.teacher}>
-                <img src={teacher.avatar_url} alt={teacher.name} width={44} height={44}/>
+                <img className={styles.teacherAvatar} src={teacher.avatar_url} alt={teacher.name} width={44} height={44}/>
                 <div>
                     <p className={styles.teacherLabel}>Your teacher</p>
                     <p className={styles.teacherName}>{teacher.name} {teacher.surname}</p>
@@ -95,8 +98,14 @@ function BookingModal({ teacher, colors, onClose, onRequireAuth, selectedLanguag
                         {errors.phone && <p className={styles.error}>{errors.phone.message}</p>}
                     </div>
                 </div>
-                {submitError && <p className={styles.error}>{submitError}</p>}
-            <button type="submit" className={styles.submitBtn} style={{backgroundColor: colors.btnPrimary, color: colors.btnText}}>Send</button>
+            <button
+                type="submit"
+                className={styles.submitBtn}
+                style={{backgroundColor: colors.btnPrimary, color: colors.btnText}}
+                disabled={isSubmitting}
+            >
+                {isSubmitting ? 'Sending...' : 'Send'}
+            </button>
             </form>
             
         </div>

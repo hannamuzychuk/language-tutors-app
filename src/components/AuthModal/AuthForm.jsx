@@ -6,6 +6,7 @@ function AuthForm({
     errors,
     styles,
     colors,
+    isSubmitting = false,
 }) {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
@@ -60,8 +61,13 @@ function AuthForm({
                     backgroundColor: colors.btnPrimary,
                     color: colors.btnText,
                 }}
+                disabled={isSubmitting}
             >
-                {isRegister ? 'Register' : 'Login'}
+                {isSubmitting
+                    ? 'Please wait...'
+                    : isRegister
+                        ? 'Register'
+                        : 'Login'}
             </button>
         </form>
     );

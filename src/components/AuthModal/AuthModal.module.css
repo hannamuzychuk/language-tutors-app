@@ -72,6 +72,11 @@
     font-weight: 500;
     cursor: pointer;
   }
+
+  .submitBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
   
   .toggleBtn {
     margin-top: 16px;

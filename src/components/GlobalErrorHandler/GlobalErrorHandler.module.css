@@ -1,0 +1,42 @@
+.wrapper {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 2100;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: min(560px, calc(100% - 32px));
+  padding: 16px 20px;
+  border-radius: 12px;
+  background-color: #fff1f0;
+  border: 1px solid #f5c2c0;
+  box-shadow: 0 8px 24px rgba(18, 20, 23, 0.12);
+  transform: translateX(-50%);
+}
+
+.message {
+  margin: 0;
+  flex: 1;
+  font-size: 16px;
+  line-height: 24px;
+  color: #121417;
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #121417;
+  cursor: pointer;
+}
+
+.closeBtn:hover {
+  opacity: 0.7;
+}

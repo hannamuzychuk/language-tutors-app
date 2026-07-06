@@ -11,17 +11,20 @@ import BookingModal from '../../components/BookingModal/BookingModal';
 import AuthModal from '../../components/AuthModal/AuthModal';
 import { useAuth } from '../../context/AuthContext';
 import { useFavorites } from '../../context/FavoritesContext';
+import { useLoading } from '../../context/LoadingContext';
+import { useError } from '../../context/ErrorContext';
 
 function TeachersPage() {
     const { theme } = useTheme();
     const colors = THEME_COLORS[theme];
     const { user } = useAuth();
     const { isFavorite, toggleFavorites } = useFavorites();
+    const { isLoadingKey, withLoading, LOADING_KEYS } = useLoading();
+    const { showError } = useError();
     const [filters, setFilters] = useState({ language: '', level: '', price: '' });
     const [teachers, setTeachers] = useState([]);
     const [lastKey, setLastKey] = useState(null);
     const [hasMore, setHasMore] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const [selectedTeacher, setSelectedTeacher] = useState(null);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -29,16 +32,20 @@ function TeachersPage() {
 
     useEffect(() => {
         const loadInitialTeachers = async () => {
-            setLoading(true);
-            const { teachers: batch, lastKey: key, hasMore: more } = await getTeachersBatch();
-            setTeachers(batch);
-            setLastKey(key);
-            setHasMore(more);
-            setLoading(false);
+            try {
+                await withLoading(LOADING_KEYS.TEACHERS, async () => {
+                    const { teachers: batch, lastKey: key, hasMore: more } = await getTeachersBatch();
+                    setTeachers(batch);
+                    setLastKey(key);
+                    setHasMore(more);
+                });
+            } catch (error) {
+                showError(error.message || 'Failed to load teachers.');
+            }
         };
 
         loadInitialTeachers();
-    }, []);
+    }, [withLoading, showError, LOADING_KEYS.TEACHERS]);
 
     const filteredTeachers = teachers.filter((teacher) => {
         if (filters.language && !teacher.languages.includes(filters.language)) return false;
@@ -87,14 +94,18 @@ function TeachersPage() {
     };
 
     const handleLoadMore = async () => {
-        if (!hasMore || loading) return;
+        if (!hasMore || isLoadingKey(LOADING_KEYS.TEACHERS_MORE)) return;
 
-        setLoading(true);
-        const { teachers: batch, lastKey: key, hasMore: more } = await getTeachersBatch(lastKey);
-        setTeachers((prev) => [...prev, ...batch]);
-        setLastKey(key);
-        setHasMore(more);
-        setLoading(false);
+        try {
+            await withLoading(LOADING_KEYS.TEACHERS_MORE, async () => {
+                const { teachers: batch, lastKey: key, hasMore: more } = await getTeachersBatch(lastKey);
+                setTeachers((prev) => [...prev, ...batch]);
+                setLastKey(key);
+                setHasMore(more);
+            });
+        } catch (error) {
+            showError(error.message || 'Failed to load more teachers.');
+        }
     };
 
     const handleBookingRequireAuth = () => {
@@ -118,7 +129,7 @@ function TeachersPage() {
                     />
                 ))}
 
-                {!loading && filteredTeachers.length === 0 && (
+                {!isLoadingKey(LOADING_KEYS.TEACHERS) && filteredTeachers.length === 0 && (
                     <p className={styles.noTeachers}>No teachers found for selected filters.</p>
                 )}
             </section>
@@ -132,9 +143,9 @@ function TeachersPage() {
                         color: colors.btnText,
                     }}
                     onClick={handleLoadMore}
-                    disabled={loading}
+                    disabled={isLoadingKey(LOADING_KEYS.TEACHERS_MORE)}
                 >
-                    {loading ? 'Loading...' : 'Load more'}
+                    {isLoadingKey(LOADING_KEYS.TEACHERS_MORE) ? 'Loading...' : 'Load more'}
                 </button>
             )}
 

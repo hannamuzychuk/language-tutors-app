@@ -5,11 +5,13 @@ import { registerSchema, loginSchema } from '../../validation/authSchema';
 import { registerUser, loginUser } from '../../firebase/authService';
 import { useTheme } from '../../context/ThemeContext';
 import { THEME_COLORS } from '../../config/themeColors';
+import { useError } from '../../context/ErrorContext';
 import AuthForm from './AuthForm';
 import styles from './AuthModal.module.css'; 
 
 function AuthModalForm({ isRegister, onClose, onToggleModal, colors }) {
-  const [authError, setAuthError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showError } = useError();
 
   const {
     register,
@@ -20,9 +22,8 @@ function AuthModalForm({ isRegister, onClose, onToggleModal, colors }) {
   });
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
-      setAuthError('');
-
       if (isRegister) {
         await registerUser(data.email, data.password);
       } else {
@@ -31,7 +32,9 @@ function AuthModalForm({ isRegister, onClose, onToggleModal, colors }) {
 
       onClose();
     } catch (error) {
-      setAuthError(error.message);
+      showError(error.message || 'Authentication failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -45,9 +48,8 @@ function AuthModalForm({ isRegister, onClose, onToggleModal, colors }) {
         onSubmit={onSubmit}
         styles={styles}
         colors={colors}
+        isSubmitting={isSubmitting}
       />
-
-      {authError && <p className={styles.error}>{authError}</p>}
 
       <button type="button" className={styles.toggleBtn} onClick={onToggleModal}>
         {isRegister
