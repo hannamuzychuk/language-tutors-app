@@ -158,6 +158,10 @@ function TeachersPage() {
         ? filteredTeachers.slice(0, visibleCount)
         : filteredTeachers;
     const showLoadMore = isFilteringActive ? visibleCount < filteredTeachers.length : hasMore;
+    const isFiltersLoading =
+        isFilteringActive &&
+        !hasLoadedAllTeachers &&
+        isLoadingKey(LOADING_KEYS.TEACHERS_MORE);
 
     const openBookingModal = (teacher) => {
         setSelectedTeacher(teacher);
@@ -222,24 +226,36 @@ function TeachersPage() {
         <main className={styles.page}>
             <TeachersFilters onChange={handleFiltersChange} teachers={teachers} />
             <section className={styles.cards}>
-                {displayedTeachers.map((teacher, index) => (
-                    <TeacherCard
-                        key={teacher.id ?? index}
-                        teacher={teacher}
-                        colors={colors}
-                        onBookLesson={openBookingModal}
-                        isFavorite={isFavorite(teacher)}
-                        onToggleFavorite={handleToggleFavorite}
-                        activeLevel={filters.level}
-                    />
-                ))}
+                {isFiltersLoading ? (
+                    <div className={styles.loadingTeachers} role="status" aria-live="polite">
+                        <span
+                            className={styles.loadingSpinner}
+                            style={{ borderTopColor: colors.accent }}
+                            aria-hidden="true"
+                        />
+                    </div>
+                ) : (
+                    <>
+                        {displayedTeachers.map((teacher, index) => (
+                            <TeacherCard
+                                key={teacher.id ?? index}
+                                teacher={teacher}
+                                colors={colors}
+                                onBookLesson={openBookingModal}
+                                isFavorite={isFavorite(teacher)}
+                                onToggleFavorite={handleToggleFavorite}
+                                activeLevel={filters.level}
+                            />
+                        ))}
 
-                {!isLoadingKey(LOADING_KEYS.TEACHERS) && filteredTeachers.length === 0 && (
-                    <p className={styles.noTeachers}>No teachers found for selected filters.</p>
+                        {!isLoadingKey(LOADING_KEYS.TEACHERS) && filteredTeachers.length === 0 && (
+                            <p className={styles.noTeachers}>No teachers found for selected filters.</p>
+                        )}
+                    </>
                 )}
             </section>
 
-            {showLoadMore && (
+            {showLoadMore && !isFiltersLoading && (
                 <button
                     type="button"
                     className={styles.loadMoreBtn}
