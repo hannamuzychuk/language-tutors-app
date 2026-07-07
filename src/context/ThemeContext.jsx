@@ -1,11 +1,9 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { THEMES } from '../config/themes';
+import { ThemeContext } from './contexts';
 
 const THEME_STORAGE_KEY = 'learnlingo-theme';
 const DEFAULT_THEME = 'gray';
-
-export const THEMES = ['gray', 'yellow', 'green', 'blue', 'coral', 'orange'];
-
-const ThemeContext = createContext();
 
 function getInitialTheme() {
   const saved = localStorage.getItem(THEME_STORAGE_KEY);
@@ -30,8 +28,4 @@ export function ThemeProvider({ children }) {
       {children}
     </ThemeContext.Provider>
   );
-}
-
-export function useTheme() {
-  return useContext(ThemeContext);
 }

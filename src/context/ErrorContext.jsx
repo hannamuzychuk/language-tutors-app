@@ -1,7 +1,6 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import GlobalErrorHandler from '../components/GlobalErrorHandler/GlobalErrorHandler';
-
-const ErrorContext = createContext();
+import { ErrorContext } from './contexts';
 
 export function ErrorProvider({ children }) {
     const [error, setError] = useState(null);
@@ -32,12 +31,4 @@ export function ErrorProvider({ children }) {
             <GlobalErrorHandler error={error} onClose={clearError} />
         </ErrorContext.Provider>
     );
-}
-
-export function useError() {
-    const context = useContext(ErrorContext);
-    if (!context) {
-        throw new Error('useError must be used within ErrorProvider');
-    }
-    return context;
 }

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IoClose, IoMenu } from 'react-icons/io5';
-import { useAuth } from '../../context/AuthContext';
 import { THEME_COLORS } from '../../config/themeColors';
-import { useTheme } from '../../context/ThemeContext';
+import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../hooks/useTheme';
 import { logoutUser } from '../../firebase/authService';
 import { forceUnlockBodyScroll, lockBodyScroll, unlockBodyScroll } from '../../utils/bodyScrollLock';
 import AuthModal from '../AuthModal/AuthModal';
@@ -51,7 +51,6 @@ function Header() {
   };
 
   useEffect(() => {
-    setIsMenuOpen(false);
     forceUnlockBodyScroll();
   }, [location.pathname]);
 
@@ -172,7 +171,7 @@ function Header() {
               onClick={closeMenu}
               aria-label="Close menu"
             >
-              <IoClose size={28} />
+              <IoClose size={32} />
             </button>
 
             <nav className={styles.mobileNav} aria-label="Mobile navigation">

@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema, loginSchema } from '../../validation/authSchema';
 import { registerUser, loginUser } from '../../firebase/authService';
-import { useTheme } from '../../context/ThemeContext';
 import { THEME_COLORS } from '../../config/themeColors';
-import { useError } from '../../context/ErrorContext';
+import { useTheme } from '../../hooks/useTheme';
+import { useError } from '../../hooks/useError';
 import AuthForm from './AuthForm';
 import styles from './AuthModal.module.css'; 
 
@@ -71,7 +71,17 @@ function AuthModal({ onClose, initialMode = 'login', message }) {
     <div className={styles.authModal}>
       <h2 className={styles.title}>{isRegister ? 'Register' : 'Login'}</h2>
 
-      {message && <p className={styles.notice}>{message}</p>}
+      {message && (
+        <p
+          className={styles.notice}
+          style={{
+            backgroundColor: `${colors.accent}33`,
+            border: `1px solid ${colors.accent}73`,
+          }}
+        >
+          {message}
+        </p>
+      )}
 
       <p className={styles.subtitle}>{isRegister
       ? 'Create an account to get started' : 'Log in to your account'}

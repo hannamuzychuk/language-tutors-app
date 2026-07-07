@@ -7,6 +7,7 @@ function PasswordInput({
   placeholder,
   error,
   styles,
+  colors,
   autoComplete = 'current-password',
 }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -34,7 +35,11 @@ function PasswordInput({
           <IoEyeOffOutline size={20} aria-hidden="true" />
         )}
       </button>
-      {error && <p className={styles.error}>{error.message}</p>}
+      {error && (
+        <p className={styles.error} style={{ color: colors.accent }}>
+          {error.message}
+        </p>
+      )}
     </div>
   );
 }
@@ -62,7 +67,11 @@ function AuthForm({
             {...register('name')}
             placeholder="Name"
           />
-          {errors.name && <p className={styles.error}>{errors.name.message}</p>}
+          {errors.name && (
+            <p className={styles.error} style={{ color: colors.accent }}>
+              {errors.name.message}
+            </p>
+          )}
         </div>
       )}
 
@@ -76,7 +85,11 @@ function AuthForm({
           {...register('email')}
           placeholder="Email"
         />
-        {errors.email && <p className={styles.error}>{errors.email.message}</p>}
+        {errors.email && (
+          <p className={styles.error} style={{ color: colors.accent }}>
+            {errors.email.message}
+          </p>
+        )}
       </div>
 
       <PasswordInput
@@ -85,6 +98,7 @@ function AuthForm({
         placeholder="Password"
         error={errors.password}
         styles={styles}
+        colors={colors}
         autoComplete={isRegister ? 'new-password' : 'current-password'}
       />
 

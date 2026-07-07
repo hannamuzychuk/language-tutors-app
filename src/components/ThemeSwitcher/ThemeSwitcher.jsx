@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useTheme, THEMES } from '../../context/ThemeContext';
+import { THEMES } from '../../config/themes';
+import { useTheme } from '../../hooks/useTheme';
 import styles from './ThemeSwitcher.module.css';
 
 const THEME_COLORS = {

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import HeroThemeBlock from '../../components/HeroThemeBlock/HeroThemeBlock';
 import { THEME_COLORS } from '../../config/themeColors';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../hooks/useTheme';
 import styles from './HomePage.module.css';
 
 const stats = [

@@ -36,7 +36,7 @@ function Modal({ isOpen, onClose, children, fullHeight = false }) {
         onClick={(e) => e.stopPropagation()}
       >
       <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close">
-        <IoClose />
+        <IoClose size={32} />
       </button>
         {children}
       </div>

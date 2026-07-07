@@ -4,7 +4,7 @@ import bookIcon from '../icons/book-open-01.svg';
 import starIcon from '../icons/Star.svg';
 import styles from './TeacherCard.module.css';
 import { levelsMatch, getTeacherLevels } from '../../utils/levelUtils';
-import { getTeacherLanguages, getTeacherConditions } from '../../utils/teacherUtils';
+import { getAllTeacherLanguages, getTeacherConditions } from '../../utils/teacherUtils';
 
 function getReviewAvatarUrl(review) {
     if (review.reviewer_avatar_url) return review.reviewer_avatar_url;
@@ -53,7 +53,7 @@ function TeacherCard({teacher, colors, onBookLesson, isFavorite, onToggleFavorit
     const [isExpanded, setIsExpanded] = useState(false);
 
     const levels = getTeacherLevels(teacher.levels);
-    const languages = getTeacherLanguages(teacher.languages);
+    const languages = getAllTeacherLanguages(teacher);
     const conditions = getTeacherConditions(teacher.conditions);
 
     return (

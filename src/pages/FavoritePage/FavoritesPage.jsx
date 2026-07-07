@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { useFavorites } from '../../context/FavoritesContext';
-import { useTheme } from '../../context/ThemeContext';
 import { THEME_COLORS } from '../../config/themeColors';
+import { useAuth } from '../../hooks/useAuth';
+import { useFavorites } from '../../hooks/useFavorites';
+import { useTheme } from '../../hooks/useTheme';
 import TeacherCard from '../../components/TeacherCard/TeacherCard';
 import Modal from '../../components/Modal/Modal';
 import BookingModal from '../../components/BookingModal/BookingModal';
@@ -20,12 +20,9 @@ function FavoritesPage() {
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const [selectedTeacher, setSelectedTeacher] = useState(null);
 
-    useEffect(() => {
-        setVisibleCount((prev) => Math.min(prev, favorites.length || FAVORITES_PER_PAGE));
-    }, [favorites.length]);
-
-    const visibleFavorites = favorites.slice(0, visibleCount);
-    const hasMore = visibleCount < favorites.length;
+    const safeVisibleCount = Math.min(visibleCount, favorites.length || FAVORITES_PER_PAGE);
+    const visibleFavorites = favorites.slice(0, safeVisibleCount);
+    const hasMore = safeVisibleCount < favorites.length;
 
     if (loading) {
         return (

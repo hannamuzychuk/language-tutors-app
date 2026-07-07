@@ -1,15 +1,14 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useAuth } from './AuthContext.jsx';
-import { useError } from './ErrorContext.jsx';
-import { useLoading } from './LoadingContext.jsx';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { useError } from '../hooks/useError';
+import { useLoading } from '../hooks/useLoading';
+import { FavoritesContext } from './contexts';
 import {
     subscribeFavorite,
     addFavorite,
     removeFavorite,
     getTeacherKey,
 } from '../firebase/favoriteService';
-
-const FavoritesContext = createContext();
 
 export function FavoritesProvider({children}) {
     const {user} = useAuth();
@@ -19,7 +18,6 @@ export function FavoritesProvider({children}) {
 
     useEffect(() => {
         if(!user) {
-            setFavorites([]);
             return;
         }
 
@@ -28,6 +26,7 @@ export function FavoritesProvider({children}) {
     }, [user]);
 
     const isFavorite = (teacher) => {
+        if (!user) return false;
         const key = getTeacherKey(teacher);
         return favorites.some((favorite) => getTeacherKey(favorite) === key);
     }
@@ -54,12 +53,3 @@ export function FavoritesProvider({children}) {
         </FavoritesContext.Provider>
     )
 }
-
-export function useFavorites() {
-    const context = useContext(FavoritesContext);
-    if (!context) {
-        throw new Error('useFavorites must be used within FavoritesProvider');
-    }
-    return context;
-}
-

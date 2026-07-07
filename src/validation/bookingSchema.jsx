@@ -6,6 +6,9 @@ export const bookingSchema = yup.object({
     email: yup 
     .string()
     .email('Enter a valid name')
-    .required('email is required'),
-    phone: yup.string().required('Phone is required'),
+    .required('Email is required'),
+    phone: yup
+        .string()
+        .matches(/^\d+$/, 'Phone must contain only digits')
+        .required('Phone is required'),
 });

@@ -1,7 +1,8 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import GlobalLoader from '../components/GlobalLoader/GlobalLoader';
+import { LoadingContext } from './contexts';
 
-export const LOADING_KEYS = {
+const LOADING_KEYS = {
     TEACHERS: 'teachers',
     TEACHERS_MORE: 'teachersMore',
     FAVORITES: 'favorites',
@@ -9,8 +10,6 @@ export const LOADING_KEYS = {
 };
 
 const GLOBAL_LOADER_KEYS = new Set([LOADING_KEYS.TEACHERS]);
-
-const LoadingContext = createContext();
 
 export function LoadingProvider({ children }) {
     const [loadingCounts, setLoadingCounts] = useState({});
@@ -67,12 +66,4 @@ export function LoadingProvider({ children }) {
             <GlobalLoader isLoading={isGlobalLoading} />
         </LoadingContext.Provider>
     );
-}
-
-export function useLoading() {
-    const context = useContext(LoadingContext);
-    if (!context) {
-        throw new Error('useLoading must be used within LoadingProvider');
-    }
-    return context;
 }

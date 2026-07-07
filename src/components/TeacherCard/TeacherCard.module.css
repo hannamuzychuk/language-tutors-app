@@ -300,14 +300,27 @@
   gap: 8px;
 }
 
+.readMoreBtn + .levels {
+  margin-top: 16px;
+}
+
+.reviews + .levels {
+  margin-top: 16px;
+}
+
+.levels + .bookBtn {
+  margin-top: 16px;
+}
+
 .levelTag {
   display: inline-flex;
   align-items: center;
   height: 32px;
   padding: 8px 12px;
   border-radius: 35px;
+  font-weight: 500;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 114%;
   color: #121417;
   border: 1px solid rgba(18, 20, 23, 0.2);
   background-color: transparent;
@@ -351,6 +364,12 @@
     overflow-x: visible;
     flex-wrap: wrap;
   }
+
+  .bookBtn {
+    align-self: center;
+    width: 232px;
+    height: 60px;
+  }
 }
 
 @media (min-width: 1440px) {
@@ -383,7 +402,7 @@
   }
 
   .content {
-    gap: 32px;
+    gap: 16px;
   }
 
   .topSection {

@@ -1,39 +1,61 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import FilterSelect from './FilterSelect';
+import { getTeacherLevels } from '../../utils/levelUtils';
+import { getAllTeacherLanguages } from '../../utils/teacherUtils';
 import styles from './TeachersFilters.module.css';
 
-const LANGUAGE_OPTIONS = [
-    { value: '', label: 'All' },
-    { value: 'English', label: 'English' },
-    { value: 'German', label: 'German' },
-    { value: 'French', label: 'French' },
-    { value: 'Ukrainian', label: 'Ukrainian' },
-    { value: 'Polish', label: 'Polish' },
-];
+const LEVEL_ORDER = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2'];
 
-const LEVEL_OPTIONS = [
-    { value: '', label: 'All levels' },
-    { value: 'A1 Beginner', label: 'A1 Beginner' },
-    { value: 'A2 Elementary', label: 'A2 Elementary' },
-    { value: 'B1 Intermediate', label: 'B1 Intermediate' },
-    { value: 'B2 Upper-Intermediate', label: 'B2 Upper-Intermediate' },
-    { value: 'C1 Advanced', label: 'C1 Advanced' },
-    { value: 'C2 Proficient', label: 'C2 Proficient' },
-];
+function getLevelSortKey(level) {
+    const code = level?.trim().slice(0, 2).toLowerCase();
+    const index = LEVEL_ORDER.indexOf(code);
+    return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+}
 
-const PRICE_OPTIONS = [
-    { value: '', label: 'Price' },
-    { value: '10', label: '10 $' },
-    { value: '20', label: '20 $' },
-    { value: '30', label: '30 $' },
-    { value: '40', label: '40 $' },
-];
-
-function TeachersFilters({ onChange }) {
+function TeachersFilters({ onChange, teachers = [] }) {
     const [language, setLanguage] = useState('');
     const [level, setLevel] = useState('');
     const [price, setPrice] = useState('');
     const [openFilter, setOpenFilter] = useState(null);
+
+    const languageOptions = useMemo(() => {
+        const uniqueLanguages = new Set();
+
+        teachers.forEach((teacher) => {
+            getAllTeacherLanguages(teacher).forEach((lang) => {
+                if (lang) uniqueLanguages.add(lang);
+            });
+        });
+
+        const sorted = Array.from(uniqueLanguages).sort((a, b) => a.localeCompare(b));
+        return [{ value: '', label: 'All' }, ...sorted.map((lang) => ({ value: lang, label: lang }))];
+    }, [teachers]);
+
+    const levelOptions = useMemo(() => {
+        const uniqueLevels = new Set();
+
+        teachers.forEach((teacher) => {
+            getTeacherLevels(teacher.levels).forEach((teacherLevel) => {
+                if (teacherLevel) uniqueLevels.add(teacherLevel);
+            });
+        });
+
+        const sorted = Array.from(uniqueLevels).sort((a, b) => {
+            const byLevelCode = getLevelSortKey(a) - getLevelSortKey(b);
+            if (byLevelCode !== 0) return byLevelCode;
+            return a.localeCompare(b);
+        });
+
+        return [{ value: '', label: 'All levels' }, ...sorted.map((item) => ({ value: item, label: item }))];
+    }, [teachers]);
+
+    const priceOptions = [
+        { value: '', label: 'Price' },
+        { value: '10', label: '10 $' },
+        { value: '20', label: '20 $' },
+        { value: '30', label: '30 $' },
+        { value: '40', label: '40 $' },
+    ];
 
     const updateFilters = (next) => {
         onChange?.(next);
@@ -41,7 +63,9 @@ function TeachersFilters({ onChange }) {
 
     const handleLanguageChange = (value) => {
         setLanguage(value);
-        updateFilters({ language: value, level, price });
+        setLevel('');
+        setPrice('');
+        updateFilters({ language: value, level: '', price: '' });
     };
 
     const handleLevelChange = (value) => {
@@ -60,7 +84,7 @@ function TeachersFilters({ onChange }) {
                 id="language-filter"
                 label="Languages"
                 value={language}
-                options={LANGUAGE_OPTIONS}
+                options={languageOptions}
                 placeholder="All"
                 isOpen={openFilter === 'language'}
                 onOpen={() => setOpenFilter('language')}
@@ -71,7 +95,7 @@ function TeachersFilters({ onChange }) {
                 id="level-filter"
                 label="Level of knowledge"
                 value={level}
-                options={LEVEL_OPTIONS}
+                options={levelOptions}
                 placeholder="All levels"
                 isOpen={openFilter === 'level'}
                 onOpen={() => setOpenFilter('level')}
@@ -82,7 +106,7 @@ function TeachersFilters({ onChange }) {
                 id="price-filter"
                 label="Price"
                 value={price}
-                options={PRICE_OPTIONS}
+                options={priceOptions}
                 placeholder="Price"
                 isOpen={openFilter === 'price'}
                 onOpen={() => setOpenFilter('price')}

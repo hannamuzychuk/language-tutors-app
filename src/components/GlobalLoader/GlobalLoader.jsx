@@ -1,4 +1,4 @@
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../hooks/useTheme';
 import { THEME_COLORS } from '../../config/themeColors';
 import styles from './GlobalLoader.module.css';
 

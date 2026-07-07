@@ -30,8 +30,9 @@
   border-radius: 14px;
   background-color: #ffffff;
   color: #121417;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 111%;
+  font-weight: 500;
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5' fill='none'%3E%3Cpath d='M1 1L5 4L9 1' stroke='%23121417' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -91,9 +92,10 @@
   border-radius: 10px;
   background: none;
   font-family: inherit;
-  font-size: 16px;
-  line-height: 20px;
-  color: #121417;
+  font-size: 18px;
+  line-height: 111%;
+  font-weight: 500;
+  color: rgba(18, 20, 23, 0.35);
   text-align: left;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -106,10 +108,11 @@
 
 .optionActive {
   background-color: rgba(18, 20, 23, 0.08);
+  color: #121417;
   font-weight: 500;
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 768px) {
   .filters {
     flex-direction: row;
     flex-wrap: nowrap;

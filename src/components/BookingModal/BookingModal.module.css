@@ -14,16 +14,18 @@
 
 .title {
   margin: 0;
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.5;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: -0.02em;
   color: #121417;
 }
 
 .subtitle {
   margin: 0;
   font-size: 16px;
-  line-height: 1.375;
+  line-height: 138%;
+  font-weight: 400;
   color: rgba(18, 20, 23, 0.8);
 }
 
@@ -41,8 +43,9 @@
 
 .teacherLabel {
   margin: 0;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 12px;
+  line-height: 133%;
+  font-weight: 500;
   color: #8a8a89;
 }
 
@@ -61,8 +64,8 @@
 
 .question {
   margin: 40px 0 20px;
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 24px;
+  line-height: 133%;
   font-weight: 500;
   color: #121417;
 }
@@ -202,9 +205,5 @@
   .bookingModal {
     padding: 64px;
     border-radius: 30px;
-  }
-
-  .title {
-    font-size: 32px;
   }
 }

@@ -1,13 +1,50 @@
 export function getTeacherLanguages(languages) {
-  if (Array.isArray(languages)) {
-    return languages;
-  }
+  const unique = new Set();
 
-  if (languages && typeof languages === 'object') {
-    return Object.values(languages).filter(Boolean);
-  }
+  const addTokensFromString = (value) => {
+    String(value)
+      .split(/[;,/]+/)
+      .map((item) => item.trim())
+      .filter(Boolean)
+      .forEach((token) => unique.add(token));
+  };
 
-  return [];
+  const collect = (value) => {
+    if (value == null) return;
+
+    if (typeof value === 'string') {
+      addTokensFromString(value);
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach(collect);
+      return;
+    }
+
+    if (typeof value === 'object') {
+      if ('name' in value) collect(value.name);
+      if ('label' in value) collect(value.label);
+      if ('value' in value) collect(value.value);
+      Object.values(value).forEach(collect);
+    }
+  };
+
+  collect(languages);
+  return Array.from(unique);
+}
+
+export function getAllTeacherLanguages(teacher) {
+  const candidates = [teacher?.languages, teacher?.language, teacher?.speaks];
+  const unique = new Set();
+
+  candidates.forEach((source) => {
+    getTeacherLanguages(source).forEach((lang) => {
+      if (lang) unique.add(lang);
+    });
+  });
+
+  return Array.from(unique);
 }
 
 export function getTeacherConditions(conditions) {

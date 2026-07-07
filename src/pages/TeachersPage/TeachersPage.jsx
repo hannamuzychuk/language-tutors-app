@@ -1,19 +1,53 @@
 import { useEffect, useState } from 'react';
-import { useTheme } from '../../context/ThemeContext';
 import { THEME_COLORS } from '../../config/themeColors';
+import { useAuth } from '../../hooks/useAuth';
+import { useError } from '../../hooks/useError';
+import { useFavorites } from '../../hooks/useFavorites';
+import { useLoading } from '../../hooks/useLoading';
+import { useTheme } from '../../hooks/useTheme';
 import styles from './TeachersPage.module.css';
 import TeachersFilters from '../../components/TeachersFilter/TeachersFilters';
 import TeacherCard from '../../components/TeacherCard/TeacherCard';
 import { getTeachersBatch } from '../../firebase/teachersService';
 import { levelsMatch, getTeacherLevels } from '../../utils/levelUtils';
-import { getTeacherLanguages } from '../../utils/teacherUtils';
+import { getAllTeacherLanguages } from '../../utils/teacherUtils';
 import Modal from '../../components/Modal/Modal';
 import BookingModal from '../../components/BookingModal/BookingModal';
 import AuthModal from '../../components/AuthModal/AuthModal';
-import { useAuth } from '../../context/AuthContext';
-import { useFavorites } from '../../context/FavoritesContext';
-import { useLoading } from '../../context/LoadingContext';
-import { useError } from '../../context/ErrorContext';
+
+const TEACHERS_PER_PAGE = 4;
+
+function normalizeText(value) {
+    return String(value ?? '').trim().toLowerCase();
+}
+
+function languageMatches(teacherLanguages, selectedLanguage) {
+    const normalizedSelected = normalizeText(selectedLanguage);
+    if (!normalizedSelected) return true;
+
+    const normalizedTeacherLanguages = teacherLanguages.map(normalizeText).filter(Boolean);
+
+    return normalizedTeacherLanguages.some(
+        (teacherLanguage) =>
+            teacherLanguage === normalizedSelected ||
+            teacherLanguage.includes(normalizedSelected) ||
+            normalizedSelected.includes(teacherLanguage)
+    );
+}
+
+function mergeTeachersById(prevTeachers, nextTeachers) {
+    const merged = [...prevTeachers];
+    const seen = new Set(prevTeachers.map((teacher) => teacher.id));
+
+    nextTeachers.forEach((teacher) => {
+        if (!seen.has(teacher.id)) {
+            merged.push(teacher);
+            seen.add(teacher.id);
+        }
+    });
+
+    return merged;
+}
 
 function TeachersPage() {
     const { theme } = useTheme();
@@ -24,12 +58,16 @@ function TeachersPage() {
     const { showError } = useError();
     const [filters, setFilters] = useState({ language: '', level: '', price: '' });
     const [teachers, setTeachers] = useState([]);
+    const [allTeachers, setAllTeachers] = useState([]);
     const [lastKey, setLastKey] = useState(null);
-    const [hasMore, setHasMore] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [hasLoadedAllTeachers, setHasLoadedAllTeachers] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(TEACHERS_PER_PAGE);
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const [selectedTeacher, setSelectedTeacher] = useState(null);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [authModalMessage, setAuthModalMessage] = useState('');
+    const isFilteringActive = Boolean(filters.language || filters.level || filters.price);
 
     useEffect(() => {
         let isMounted = true;
@@ -37,11 +75,13 @@ function TeachersPage() {
         const loadInitialTeachers = async () => {
             try {
                 await withLoading(LOADING_KEYS.TEACHERS, async () => {
-                    const { teachers: batch, lastKey: key, hasMore: more } = await getTeachersBatch();
+                    const response = await getTeachersBatch();
                     if (!isMounted) return;
-                    setTeachers(batch);
-                    setLastKey(key);
-                    setHasMore(more);
+                    setTeachers(response.teachers);
+                    setLastKey(response.lastKey);
+                    setHasMore(response.hasMore);
+                    setAllTeachers(response.teachers);
+                    setHasLoadedAllTeachers(false);
                 });
             } catch (error) {
                 if (isMounted) {
@@ -57,10 +97,54 @@ function TeachersPage() {
         };
     }, [withLoading, showError, LOADING_KEYS.TEACHERS]);
 
-    const filteredTeachers = teachers.filter((teacher) => {
-        const languages = getTeacherLanguages(teacher.languages);
+    useEffect(() => {
+        if (!isFilteringActive || hasLoadedAllTeachers) return;
 
-        if (filters.language && !languages.includes(filters.language)) return false;
+        let isMounted = true;
+        const loadAllTeachersForFilters = async () => {
+            try {
+                await withLoading(LOADING_KEYS.TEACHERS_MORE, async () => {
+                    let cursor = null;
+                    let more = true;
+                    const everyTeacher = [];
+
+                    while (more) {
+                        const response = await getTeachersBatch(cursor);
+                        everyTeacher.push(...response.teachers);
+                        cursor = response.lastKey;
+                        more = response.hasMore;
+                    }
+
+                    if (!isMounted) return;
+                    setAllTeachers(mergeTeachersById([], everyTeacher));
+                    setHasLoadedAllTeachers(true);
+                });
+            } catch (error) {
+                if (isMounted) {
+                    showError(error.message || 'Failed to load teachers for filters.');
+                }
+            }
+        };
+
+        loadAllTeachersForFilters();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [isFilteringActive, hasLoadedAllTeachers, withLoading, showError, LOADING_KEYS.TEACHERS_MORE]);
+
+    const teachersSource = isFilteringActive ? allTeachers : teachers;
+
+    const filteredTeachers = teachersSource.filter((teacher) => {
+        const languages = getAllTeacherLanguages(teacher);
+
+        if (
+            filters.language &&
+            !languageMatches(languages, filters.language) &&
+            !JSON.stringify(teacher).toLowerCase().includes(normalizeText(filters.language))
+        ) {
+            return false;
+        }
         if (filters.level) {
             const hasLevel = getTeacherLevels(teacher.levels).some((level) =>
                 levelsMatch(level, filters.level)
@@ -70,6 +154,10 @@ function TeachersPage() {
         if (filters.price && teacher.price_per_hour > parseInt(filters.price)) return false;
         return true;
     });
+    const displayedTeachers = isFilteringActive
+        ? filteredTeachers.slice(0, visibleCount)
+        : filteredTeachers;
+    const showLoadMore = isFilteringActive ? visibleCount < filteredTeachers.length : hasMore;
 
     const openBookingModal = (teacher) => {
         setSelectedTeacher(teacher);
@@ -91,12 +179,6 @@ function TeachersPage() {
         setAuthModalMessage('');
     };
 
-    useEffect(() => {
-        if (user && isAuthModalOpen) {
-            closeAuthModal();
-        }
-    }, [user, isAuthModalOpen]);
-
     const handleToggleFavorite = (teacher) => {
         if (!user) {
             openAuthModal('Please log in or register to add and view your favorite teachers.');
@@ -106,18 +188,29 @@ function TeachersPage() {
     };
 
     const handleLoadMore = async () => {
-        if (!hasMore || isLoadingKey(LOADING_KEYS.TEACHERS_MORE)) return;
+        if (isFilteringActive) {
+            setVisibleCount((prev) => prev + TEACHERS_PER_PAGE);
+            return;
+        }
+
+        if (!hasMore) return;
 
         try {
             await withLoading(LOADING_KEYS.TEACHERS_MORE, async () => {
-                const { teachers: batch, lastKey: key, hasMore: more } = await getTeachersBatch(lastKey);
-                setTeachers((prev) => [...prev, ...batch]);
-                setLastKey(key);
-                setHasMore(more);
+                const response = await getTeachersBatch(lastKey);
+                setTeachers((prev) => mergeTeachersById(prev, response.teachers));
+                setAllTeachers((prev) => mergeTeachersById(prev, response.teachers));
+                setLastKey(response.lastKey);
+                setHasMore(response.hasMore);
             });
         } catch (error) {
             showError(error.message || 'Failed to load more teachers.');
         }
+    };
+
+    const handleFiltersChange = (nextFilters) => {
+        setFilters(nextFilters);
+        setVisibleCount(TEACHERS_PER_PAGE);
     };
 
     const handleBookingRequireAuth = () => {
@@ -127,9 +220,9 @@ function TeachersPage() {
 
     return (
         <main className={styles.page}>
-            <TeachersFilters onChange={setFilters} />
+            <TeachersFilters onChange={handleFiltersChange} teachers={teachers} />
             <section className={styles.cards}>
-                {filteredTeachers.map((teacher, index) => (
+                {displayedTeachers.map((teacher, index) => (
                     <TeacherCard
                         key={teacher.id ?? index}
                         teacher={teacher}
@@ -146,7 +239,7 @@ function TeachersPage() {
                 )}
             </section>
 
-            {hasMore && (
+            {showLoadMore && (
                 <button
                     type="button"
                     className={styles.loadMoreBtn}
@@ -155,9 +248,8 @@ function TeachersPage() {
                         color: colors.btnText,
                     }}
                     onClick={handleLoadMore}
-                    disabled={isLoadingKey(LOADING_KEYS.TEACHERS_MORE)}
                 >
-                    {isLoadingKey(LOADING_KEYS.TEACHERS_MORE) ? 'Loading...' : 'Load more'}
+                    Load more
                 </button>
             )}
 

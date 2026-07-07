@@ -1,11 +1,11 @@
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { bookingSchema } from '../../validation/bookingSchema';
 import styles from './BookingModal.module.css';
 import { createBooking } from '../../firebase/bookingService';
 import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { useError } from '../../context/ErrorContext';
+import { useAuth } from '../../hooks/useAuth';
+import { useError } from '../../hooks/useError';
 
 const REASONS = [
     'Career and business',
@@ -45,12 +45,12 @@ function RadioOption({ name, value, label, register, checked, accentColor }) {
 function BookingModal({ teacher, colors, onClose, onRequireAuth, selectedLanguage = '' }) {
     const { user } = useAuth();
     const { showError } = useError();
-    const { register, handleSubmit, watch, formState: { errors } } = useForm({
+    const { register, handleSubmit, control, formState: { errors } } = useForm({
         resolver: yupResolver(bookingSchema),
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const selectedReason = watch('reason');
+    const selectedReason = useWatch({ control, name: 'reason' });
 
     const language =
         selectedLanguage && teacher.languages.includes(selectedLanguage)
@@ -130,7 +130,9 @@ function BookingModal({ teacher, colors, onClose, onRequireAuth, selectedLanguag
                 </div>
 
                 {errors.reason && (
-                    <p className={styles.error}>{errors.reason.message}</p>
+                    <p className={styles.error} style={{ color: colors.accent }}>
+                        {errors.reason.message}
+                    </p>
                 )}
 
                 <div className={styles.inputs}>
@@ -141,7 +143,11 @@ function BookingModal({ teacher, colors, onClose, onRequireAuth, selectedLanguag
                             {...register('name')}
                             placeholder="Full Name"
                         />
-                        {errors.name && <p className={styles.error}>{errors.name.message}</p>}
+                        {errors.name && (
+                            <p className={styles.error} style={{ color: colors.accent }}>
+                                {errors.name.message}
+                            </p>
+                        )}
                     </div>
                     <div className={styles.field}>
                         <input
@@ -150,7 +156,11 @@ function BookingModal({ teacher, colors, onClose, onRequireAuth, selectedLanguag
                             {...register('email')}
                             placeholder="Email"
                         />
-                        {errors.email && <p className={styles.error}>{errors.email.message}</p>}
+                        {errors.email && (
+                            <p className={styles.error} style={{ color: colors.accent }}>
+                                {errors.email.message}
+                            </p>
+                        )}
                     </div>
                     <div className={styles.field}>
                         <input
@@ -159,7 +169,11 @@ function BookingModal({ teacher, colors, onClose, onRequireAuth, selectedLanguag
                             {...register('phone')}
                             placeholder="Phone number"
                         />
-                        {errors.phone && <p className={styles.error}>{errors.phone.message}</p>}
+                        {errors.phone && (
+                            <p className={styles.error} style={{ color: colors.accent }}>
+                                {errors.phone.message}
+                            </p>
+                        )}
                     </div>
                 </div>
 
